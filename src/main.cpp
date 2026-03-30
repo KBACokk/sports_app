@@ -24,6 +24,7 @@
 #include <string>
 #include <array>
 #include <unordered_map>
+#include <unordered_set>
 #include <sstream>
 #include <iomanip>
 #include <cstring>
@@ -32,37 +33,119 @@
 #include <chrono>
 #include <thread>
 
+#if defined(_WIN32)
+#  ifndef NOMINMAX
+#    define NOMINMAX
+#  endif
+#  include <windows.h>
+#elif defined(__linux__)
+#  include <unistd.h>
+#endif
+
 // ========== ПРОТОТИПЫ ФУНКЦИЙ ==========
 // Forward declaration to allow function prototypes to use UiState before its definition.
 struct UiState;
 static void deleteRecord(UiState& ui, int id);
 static void drawTreeTextInOrder(const nlohmann::json& node, int depth = 0);
 static std::string sortFieldToBackendString(SortField field);
+static bool fetchCategories(UiState& ui);
 
 // ========== ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ==========
 
 // Получение пути к исполняемому файлу
 static std::filesystem::path getExecutablePath() {
-    char buffer[1024];
-    ssize_t len = readlink("/proc/self/exe", buffer, sizeof(buffer)-1);
-    if (len != -1) {
-        buffer[len] = '\0';
-        return std::filesystem::path(buffer).parent_path();
+#if defined(_WIN32)
+    // Windows: reliable way to get executable directory.
+    std::wstring buf(MAX_PATH, L'\0');
+    DWORD len = 0;
+    for (;;) {
+        len = GetModuleFileNameW(nullptr, buf.data(), static_cast<DWORD>(buf.size()));
+        if (len == 0) break;
+        if (len < buf.size() - 1) break;
+        buf.resize(buf.size() * 2);
+    }
+    if (len > 0) {
+        buf.resize(len);
+        return std::filesystem::path(buf).parent_path();
     }
     return std::filesystem::current_path();
+#elif defined(__linux__)
+    // Linux: /proc/self/exe points to the executable.
+    std::string buf(4096, '\0');
+    const ssize_t len = readlink("/proc/self/exe", buf.data(), buf.size() - 1);
+    if (len > 0) {
+        buf.resize(static_cast<size_t>(len));
+        return std::filesystem::path(buf).parent_path();
+    }
+    return std::filesystem::current_path();
+#else
+    return std::filesystem::current_path();
+#endif
 }
 
 // Настройка рабочей директории
-static void setupWorkingDirectory() {
-    std::filesystem::path exePath = getExecutablePath();
-    
-    // Если программа запущена из build, поднимаемся на уровень выше
-    if (exePath.filename() == "build") {
-        exePath = exePath.parent_path();
-        std::filesystem::current_path(exePath);
+struct ResolvedPaths {
+    std::filesystem::path appRoot;   // where assets/ live; set as CWD
+    std::filesystem::path dataRoot;  // where data/ live; storage uses absolute paths
+};
+
+static ResolvedPaths setupWorkingDirectory() {
+    const std::filesystem::path exeDir = getExecutablePath();
+
+    auto looksLikeAppRoot = [](const std::filesystem::path& p) -> bool {
+        return std::filesystem::exists(p / "assets");
+    };
+
+    auto looksLikeDataRoot = [](const std::filesystem::path& p) -> bool {
+        return std::filesystem::exists(p / "data" / "sports_database.dat") || std::filesystem::exists(p / "data");
+    };
+
+    auto findAppRootUpwards = [&](std::filesystem::path start) -> std::filesystem::path {
+        std::filesystem::path cur = start;
+        for (int i = 0; i < 8; ++i) {
+            if (looksLikeAppRoot(cur)) return cur;
+            if (looksLikeAppRoot(cur / "sports_app")) return cur / "sports_app"; // launched from repo root
+            if (!cur.has_parent_path()) break;
+            const auto parent = cur.parent_path();
+            if (parent == cur) break;
+            cur = parent;
+        }
+        return {};
+    };
+
+    auto findDataRootUpwards = [&](std::filesystem::path start) -> std::filesystem::path {
+        std::filesystem::path cur = start;
+        for (int i = 0; i < 8; ++i) {
+            // Prefer "this folder has data/"
+            if (looksLikeDataRoot(cur)) return cur;
+            // Also check common nested app dir
+            if (looksLikeDataRoot(cur / "sports_app")) return cur / "sports_app";
+            if (!cur.has_parent_path()) break;
+            const auto parent = cur.parent_path();
+            if (parent == cur) break;
+            cur = parent;
+        }
+        return {};
+    };
+
+    ResolvedPaths out;
+    out.appRoot = findAppRootUpwards(exeDir);
+    if (out.appRoot.empty()) out.appRoot = findAppRootUpwards(std::filesystem::current_path());
+
+    // Data root can be different from app root (e.g., user keeps shared data/ at repo root).
+    out.dataRoot = findDataRootUpwards(exeDir);
+    if (out.dataRoot.empty()) out.dataRoot = findDataRootUpwards(std::filesystem::current_path());
+    if (out.dataRoot.empty()) out.dataRoot = out.appRoot;
+
+    if (!out.appRoot.empty()) {
+        std::filesystem::current_path(out.appRoot);
     }
-    
+
+    std::cout << "Executable dir: " << exeDir << std::endl;
     std::cout << "Working directory: " << std::filesystem::current_path() << std::endl;
+    std::cout << "Data root: " << out.dataRoot << std::endl;
+
+    return out;
 }
 
 // ========== СТРУКТУРЫ ДАННЫХ ==========
@@ -92,7 +175,6 @@ struct UiState {
     // Поиск и сортировка
     char searchName[256] = "";
     char sortField[64] = "name";
-    std::string sortOrder = "ASC";
     
     // Форма добавления
     char sportId[32] = "";
@@ -131,6 +213,7 @@ struct UiState {
     char filterCategory[128] = "";
     bool filterOlympic = false;
     bool filterNonOlympic = false;
+    std::vector<std::string> knownCategories;
     
     // Статистика
     int totalOlympic = 0;
@@ -266,6 +349,31 @@ static void drawImagePreview(const std::string& path, float maxWidth = 220.0f, f
                  ImVec2(w * scale, h * scale));
 }
 
+static std::string resolveImagePath(const std::string& raw) {
+    if (raw.empty()) return {};
+
+    const std::filesystem::path p(raw);
+    if (std::filesystem::exists(p)) return p.string();
+
+    const std::filesystem::path cwd = std::filesystem::current_path();
+    if (std::filesystem::exists(cwd / p)) return (cwd / p).string();
+
+    // Common project locations (helps when stored paths are just filenames).
+    const std::filesystem::path filename = p.filename();
+    const std::filesystem::path dataDir = std::filesystem::exists(cwd / "data") ? (cwd / "data") : std::filesystem::path{};
+    const std::array<std::filesystem::path, 4> candidates = {
+        cwd / "assets" / "images" / filename,
+        dataDir.empty() ? std::filesystem::path{} : (dataDir / filename),
+        dataDir.empty() ? std::filesystem::path{} : (dataDir / p),
+        cwd / p.filename()
+    };
+    for (const auto& c : candidates) {
+        if (!c.empty() && std::filesystem::exists(c)) return c.string();
+    }
+
+    return raw;
+}
+
 static void drawStatusBar(const std::string& status, const std::string& error = "") {
     ImDrawList* drawList = ImGui::GetWindowDrawList();
     const ImVec2 pos = ImGui::GetWindowPos();
@@ -307,7 +415,8 @@ static void drawRecordCard(const nlohmann::json& rec, bool showDeleteButton, UiS
     
     ImGui::PushStyleVar(ImGuiStyleVar_ChildRounding, 10.0f);
     ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.10f, 0.10f, 0.14f, 0.65f));
-    ImGui::BeginChild("##record", ImVec2(0, 0), ImGuiChildFlags_Borders);
+    // Compact fixed-height card so each record doesn't occupy whole panel.
+    ImGui::BeginChild("##record", ImVec2(0, 400.0f), ImGuiChildFlags_Borders);
     
     // Заголовок карточки
     ImVec4 headerColor = rec.value("olympic_status", false) ? 
@@ -324,48 +433,59 @@ static void drawRecordCard(const nlohmann::json& rec, bool showDeleteButton, UiS
     if (!rec.value("category", "").empty()) {
         ImGui::TextDisabled("Категория: %s", rec.value("category", "").c_str());
     }
-    
-    // Основная информация в две колонки
-    if (ImGui::BeginTable("##record_info", 2, ImGuiTableFlags_Borders)) {
+
+    // Изображение (показываем сразу вверху карточки, чтобы было видно в списках).
+    const std::string imagePath = resolveImagePath(rec.value("image_path", ""));
+
+    if (ImGui::BeginTable("##record_layout", 2, ImGuiTableFlags_SizingStretchProp)) {
+        ImGui::TableSetupColumn("info", ImGuiTableColumnFlags_WidthStretch, 0.70f);
+        ImGui::TableSetupColumn("image", ImGuiTableColumnFlags_WidthStretch, 0.30f);
         ImGui::TableNextRow();
+
+        // Левая колонка: основные поля
         ImGui::TableSetColumnIndex(0);
-        ImGui::Text("ID:");
+        if (ImGui::BeginTable("##record_info", 2, ImGuiTableFlags_BordersInnerV | ImGuiTableFlags_SizingFixedFit)) {
+            ImGui::TableNextRow();
+            ImGui::TableSetColumnIndex(0);
+            ImGui::Text("ID:");
+            ImGui::TableSetColumnIndex(1);
+            ImGui::Text("%d", rec.value("sport_id", 0));
+
+            ImGui::TableNextRow();
+            ImGui::TableSetColumnIndex(0);
+            ImGui::Text("Категория:");
+            ImGui::TableSetColumnIndex(1);
+            ImGui::Text("%s", rec.value("category", "").c_str());
+
+            ImGui::TableNextRow();
+            ImGui::TableSetColumnIndex(0);
+            ImGui::Text("Управляющий орган:");
+            ImGui::TableSetColumnIndex(1);
+            ImGui::Text("%s", rec.value("governing_body", "").c_str());
+
+            ImGui::TableNextRow();
+            ImGui::TableSetColumnIndex(0);
+            ImGui::Text("Описание:");
+            ImGui::TableSetColumnIndex(1);
+            ImGui::TextWrapped("%s", rec.value("description", "").c_str());
+
+            ImGui::TableNextRow();
+            ImGui::TableSetColumnIndex(0);
+            ImGui::Text("Противопоказания:");
+            ImGui::TableSetColumnIndex(1);
+            ImGui::TextWrapped("%s", rec.value("medical_contraindications", "").c_str());
+
+            ImGui::EndTable();
+        }
+
+        // Правая колонка: превью картинки
         ImGui::TableSetColumnIndex(1);
-        ImGui::Text("%d", rec.value("sport_id", 0));
-        
-        ImGui::TableNextRow();
-        ImGui::TableSetColumnIndex(0);
-        ImGui::Text("Категория:");
-        ImGui::TableSetColumnIndex(1);
-        ImGui::Text("%s", rec.value("category", "").c_str());
-        
-        ImGui::TableNextRow();
-        ImGui::TableSetColumnIndex(0);
-        ImGui::Text("Управляющий орган:");
-        ImGui::TableSetColumnIndex(1);
-        ImGui::Text("%s", rec.value("governing_body", "").c_str());
-        
-        ImGui::TableNextRow();
-        ImGui::TableSetColumnIndex(0);
-        ImGui::Text("Описание:");
-        ImGui::TableSetColumnIndex(1);
-        ImGui::TextWrapped("%s", rec.value("description", "").c_str());
-        
-        ImGui::TableNextRow();
-        ImGui::TableSetColumnIndex(0);
-        ImGui::Text("Противопоказания:");
-        ImGui::TableSetColumnIndex(1);
-        ImGui::TextWrapped("%s", rec.value("medical_contraindications", "").c_str());
-        
+        ImGui::Text("📸");
+        ImGui::SameLine();
+        ImGui::TextDisabled("Фото");
+        drawImagePreview(imagePath, 200.0f, 140.0f);
+
         ImGui::EndTable();
-    }
-    
-    // Изображение
-    std::string imagePath = rec.value("image_path", "");
-    if (!imagePath.empty()) {
-        ImGui::Separator();
-        ImGui::Text("📸 Изображение:");
-        drawImagePreview(imagePath);
     }
     
     // Кнопка удаления
@@ -378,6 +498,7 @@ static void drawRecordCard(const nlohmann::json& rec, bool showDeleteButton, UiS
     }
     
     ImGui::EndChild();
+    ImGui::Spacing();
     ImGui::PopStyleColor();
     ImGui::PopStyleVar();
     ImGui::PopID();
@@ -457,10 +578,33 @@ static bool fetchPage(UiState& ui) {
     }
 }
 
+static bool fetchCategories(UiState& ui) {
+    httplib::Client cli("127.0.0.1", 8080);
+    cli.set_connection_timeout(1, 0);
+    auto res = cli.Get("/api/sports/categories");
+
+    if (!res || res->status != 200) {
+        return false;
+    }
+
+    try {
+        auto json = nlohmann::json::parse(res->body);
+        if (!json.contains("categories") || !json["categories"].is_array()) return false;
+
+        ui.knownCategories.clear();
+        ui.knownCategories.reserve(json["categories"].size());
+        for (const auto& c : json["categories"]) {
+            if (c.is_string()) ui.knownCategories.push_back(c.get<std::string>());
+        }
+        return true;
+    } catch (...) {
+        return false;
+    }
+}
+
 static void doSort(UiState& ui) {
     httplib::Client cli("127.0.0.1", 8080);
-    std::string url = "/api/sports/sort?field=" + std::string(ui.sortField) +
-                      "&order=" + ui.sortOrder;
+    std::string url = "/api/sports/sort?field=" + std::string(ui.sortField);
     
     auto res = cli.Post(url.c_str(), "", "application/json");
     
@@ -483,9 +627,22 @@ static void doBinarySearch(UiState& ui) {
     std::string encodedName = urlEncode(std::string(ui.searchName));
     auto res = cli.Get(("/api/sports/search?name=" + encodedName).c_str());
     
-    if (!res || res->status != 200) {
+    if (!res) {
         ui.hasBinarySearchRecord = false;
-        ui.errorMessage = "Запись не найдена";
+        ui.errorMessage = "Сервер недоступен";
+        return;
+    }
+    if (res->status != 200) {
+        ui.hasBinarySearchRecord = false;
+        ui.errorMessage = "Ошибка поиска";
+        try {
+            auto err = nlohmann::json::parse(res->body);
+            if (err.contains("message") && err["message"].is_string()) {
+                ui.errorMessage = err["message"].get<std::string>();
+            }
+        } catch (...) {
+            if (res->status == 404) ui.errorMessage = "Запись не найдена";
+        }
         return;
     }
     
@@ -545,6 +702,7 @@ static void addRecord(UiState& ui) {
         ui.status = "Запись добавлена";
         ui.errorMessage.clear();
         fetchPage(ui);
+        fetchCategories(ui);
         
         // Очистка формы
         memset(ui.sportId, 0, sizeof(ui.sportId));
@@ -568,6 +726,7 @@ static void deleteRecord(UiState& ui, int id) {
     if (res && res->status == 200) {
         ui.status = "Запись удалена";
         fetchPage(ui);
+        fetchCategories(ui);
     } else {
         ui.errorMessage = "Ошибка удаления";
     }
@@ -577,17 +736,22 @@ static void deleteRecord(UiState& ui, int id) {
 
 int main() {
     // Настройка рабочей директории
-    setupWorkingDirectory();
+    const ResolvedPaths paths = setupWorkingDirectory();
     
     // Создание директорий
-    std::filesystem::create_directories("data");
+    const std::filesystem::path dataDir = paths.dataRoot.empty() ? std::filesystem::current_path() / "data" : paths.dataRoot / "data";
+    std::filesystem::create_directories(dataDir);
     std::filesystem::create_directories("logs");
     std::filesystem::create_directories("assets/images");
     std::filesystem::create_directories("assets/fonts");
     
     // Инициализация сервера
     Logger logger("logs/app.log");
-    Storage storage("data/sports_database.dat", "data/sports_database_backup.dat", logger);
+    Storage storage(
+        (dataDir / "sports_database.dat").string(),
+        (dataDir / "sports_database_backup.dat").string(),
+        logger
+    );
     LocalApiServer server(storage, logger);
     server.start();
     
@@ -661,6 +825,7 @@ int main() {
     // Инициализация состояния
     UiState ui;
     fetchPage(ui);
+    fetchCategories(ui);
     
     // Главный цикл
     while (!glfwWindowShouldClose(window)) {
@@ -743,7 +908,45 @@ int main() {
             ImGui::Separator();
 
             ImGui::Text("🔍 Фильтры:");
-            ImGui::InputText("Категория", ui.filterCategory, sizeof(ui.filterCategory));
+            if (!ui.knownCategories.empty()) {
+                ImGui::TextDisabled("Категория (выбор):");
+
+                if (ImGui::Button("Все", ImVec2(70, 0))) {
+                    memset(ui.filterCategory, 0, sizeof(ui.filterCategory));
+                    ui.page = 1;
+                    fetchPage(ui);
+                }
+                ImGui::SameLine();
+                ImGui::TextDisabled("%s", (strlen(ui.filterCategory) > 0) ? ui.filterCategory : "Все категории");
+
+                const float avail = ImGui::GetContentRegionAvail().x;
+                float x = 0.0f;
+                for (const auto& cat : ui.knownCategories) {
+                    const std::string label = cat;
+                    const float w = ImGui::CalcTextSize(label.c_str()).x + ImGui::GetStyle().FramePadding.x * 2.0f;
+                    if (x > 0.0f && (x + w) > avail) {
+                        x = 0.0f;
+                    }
+                    if (x > 0.0f) ImGui::SameLine();
+
+                    const bool active = (strlen(ui.filterCategory) > 0 && label == ui.filterCategory);
+                    if (active) ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(g_primaryColor.x, g_primaryColor.y, g_primaryColor.z, 0.95f));
+                    if (ImGui::Button(label.c_str())) {
+                        std::strncpy(ui.filterCategory, label.c_str(), sizeof(ui.filterCategory));
+                        ui.filterCategory[sizeof(ui.filterCategory) - 1] = '\0';
+                        ui.page = 1;
+                        fetchPage(ui);
+                    }
+                    if (active) ImGui::PopStyleColor();
+
+                    x += w + ImGui::GetStyle().ItemSpacing.x;
+                }
+
+                ImGui::Separator();
+            } else {
+                ImGui::TextDisabled("Категории не найдены (нет данных или сервер не ответил).");
+            }
+
             ImGui::Checkbox("Только олимпийские", &ui.filterOlympic);
             if (ui.filterOlympic) ui.filterNonOlympic = false;
             ImGui::Checkbox("Только неолимпийские", &ui.filterNonOlympic);
@@ -786,64 +989,18 @@ int main() {
                 ImGui::EndCombo();
             }
 
-            if (ImGui::Button("↑ ASC")) {
-                ui.sortOrder = "ASC";
-                doSort(ui);
-            }
-            ImGui::SameLine();
-            if (ImGui::Button("↓ DESC")) {
-                ui.sortOrder = "DESC";
+            if (ImGui::Button("Сортировать", ImVec2(-1, 0))) {
                 doSort(ui);
             }
 
             ImGui::Separator();
-
-            ImGui::Text("🔎 Бинарный поиск:");
-            ImGui::InputText("Имя", ui.searchName, sizeof(ui.searchName));
-            if (ImGui::Button("Найти")) {
-                doBinarySearch(ui);
-            }
-
-            ImGui::Separator();
-
-            if (ui.showAddForm) {
-                if (ImGui::CollapsingHeader("➕ Добавление записи", ImGuiTreeNodeFlags_DefaultOpen)) {
-                    ImGui::InputText("ID (число)*", ui.sportId, sizeof(ui.sportId));
-                    ImGui::InputText("Название*", ui.name, sizeof(ui.name));
-                    ImGui::InputText("Категория", ui.category, sizeof(ui.category));
-                    ImGui::Checkbox("Олимпийский вид", &ui.olympic);
-                    ImGui::InputTextMultiline("Описание", ui.description, sizeof(ui.description), ImVec2(-1, 80));
-                    ImGui::InputText("Управляющий орган", ui.governingBody, sizeof(ui.governingBody));
-                    ImGui::InputText("Противопоказания", ui.contraindications, sizeof(ui.contraindications));
-
-                    ImGui::Separator();
-                    ImGui::Text("📸 Изображение:");
-                    ImGui::InputText("Путь к файлу", ui.imagePath, sizeof(ui.imagePath));
-                    if (ImGui::Button("Выбрать файл")) {
-                        auto selection = pfd::open_file("Выбор изображения", ".", {"Image Files", "*.png *.jpg *.jpeg *.bmp *.tga"}).result();
-                        if (!selection.empty()) {
-                            ui.selectedImageSourcePath = selection[0];
-                            strncpy(ui.imagePath, selection[0].c_str(), sizeof(ui.imagePath));
-                        }
-                    }
-
-                    if (!ui.selectedImageSourcePath.empty()) {
-                        ImGui::TextColored(g_successColor, "✓ Выбран: %s", ui.selectedImageSourcePath.c_str());
-                    }
-
-                    ImGui::Separator();
-                    if (ImGui::Button("✅ Добавить запись", ImVec2(-1, 0))) {
-                        addRecord(ui);
-                    }
-                }
-            }
 
             ImGui::EndChild();
 
             ImGui::NextColumn();
 
             ImGui::BeginChild("##right_panel", ImVec2(0, 0), true);
-            const bool hasAnyTab = ui.showRecords || ui.showTree || ui.showStats || ui.showSearch;
+            const bool hasAnyTab = ui.showAddForm || ui.showRecords || ui.showTree || ui.showStats || ui.showSearch;
             if (!hasAnyTab) {
                 ImGui::TextDisabled("Включите хотя бы один раздел в меню `Вид`.");
             } else if (ImGui::BeginTabBar("MainTabs")) {
@@ -858,6 +1015,41 @@ int main() {
                             for (const auto& rec : ui.records) {
                                 drawRecordCard(rec, true, &ui);
                             }
+                        }
+                        ImGui::EndChild();
+                        ImGui::EndTabItem();
+                    }
+                }
+
+                if (ui.showAddForm) {
+                    if (ImGui::BeginTabItem("➕ Добавление записи")) {
+                        ImGui::BeginChild("##add_record_tab", ImVec2(0, 0), true);
+                        ImGui::InputText("ID (число)*", ui.sportId, sizeof(ui.sportId));
+                        ImGui::InputText("Название*", ui.name, sizeof(ui.name));
+                        ImGui::InputText("Категория", ui.category, sizeof(ui.category));
+                        ImGui::Checkbox("Олимпийский вид", &ui.olympic);
+                        ImGui::InputTextMultiline("Описание", ui.description, sizeof(ui.description), ImVec2(-1, 120));
+                        ImGui::InputText("Управляющий орган", ui.governingBody, sizeof(ui.governingBody));
+                        ImGui::InputText("Противопоказания", ui.contraindications, sizeof(ui.contraindications));
+
+                        ImGui::Separator();
+                        ImGui::Text("📸 Изображение:");
+                        ImGui::InputText("Путь к файлу", ui.imagePath, sizeof(ui.imagePath));
+                        if (ImGui::Button("Выбрать файл")) {
+                            auto selection = pfd::open_file("Выбор изображения", ".", {"Image Files", "*.png *.jpg *.jpeg *.bmp *.tga"}).result();
+                            if (!selection.empty()) {
+                                ui.selectedImageSourcePath = selection[0];
+                                strncpy(ui.imagePath, selection[0].c_str(), sizeof(ui.imagePath));
+                            }
+                        }
+
+                        if (!ui.selectedImageSourcePath.empty()) {
+                            ImGui::TextColored(g_successColor, "✓ Выбран: %s", ui.selectedImageSourcePath.c_str());
+                        }
+
+                        ImGui::Separator();
+                        if (ImGui::Button("✅ Добавить запись", ImVec2(-1, 0))) {
+                            addRecord(ui);
                         }
                         ImGui::EndChild();
                         ImGui::EndTabItem();
@@ -968,7 +1160,14 @@ int main() {
                 }
 
                 if (ui.showSearch) {
-                    if (ImGui::BeginTabItem("🔍 Результат поиска")) {
+                    if (ImGui::BeginTabItem("Поиск")) {
+                        ImGui::Text("🔎 Бинарный поиск:");
+                        ImGui::InputText("Имя", ui.searchName, sizeof(ui.searchName));
+                        if (ImGui::Button("Найти")) {
+                            doBinarySearch(ui);
+                        }
+                        ImGui::Separator();
+
                         if (ui.hasBinarySearchRecord) {
                             drawRecordCard(ui.binarySearchRecord, false);
                         } else {

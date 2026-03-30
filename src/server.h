@@ -12,6 +12,7 @@
 #include <mutex>
 #include <algorithm>
 #include <stdexcept>
+#include <cctype>
 
 class LocalApiServer {
 public:
@@ -120,6 +121,26 @@ private:
                 }}
             };
 
+            res.set_content(response.dump(2), "application/json");
+        });
+
+        server_.Get("/api/sports/categories", [this](const httplib::Request&, httplib::Response& res) {
+            std::lock_guard<std::mutex> lock(mtx_);
+            using json = nlohmann::json;
+
+            std::vector<std::string> cats;
+            cats.reserve(data_.size());
+            for (const auto& s : data_) {
+                if (!s.category.empty()) cats.push_back(s.category);
+            }
+
+            std::sort(cats.begin(), cats.end());
+            cats.erase(std::unique(cats.begin(), cats.end()), cats.end());
+
+            json response = {
+                {"status", "success"},
+                {"categories", cats}
+            };
             res.set_content(response.dump(2), "application/json");
         });
 
@@ -255,16 +276,6 @@ private:
             std::lock_guard<std::mutex> lock(mtx_);
             using json = nlohmann::json;
 
-            if (!isSorted_ || currentSortField_ != SortField::Name) {
-                res.status = 400;
-                res.set_content(
-                    R"({"status":"error","message":"Для двоичного поиска данные должны быть отсортированы по name"})",
-                    "application/json"
-                );
-                logger_.warning("Search rejected: data is not sorted by name");
-                return;
-            }
-
             if (!req.has_param("name")) {
                 res.status = 400;
                 res.set_content(
@@ -275,9 +286,50 @@ private:
             }
 
             std::string name = req.get_param_value("name");
-            int idx = binarySearchVersion2ByName(data_, name);
+            if (name.empty()) {
+                res.status = 400;
+                res.set_content(
+                    R"({"status":"error","message":"Name must not be empty"})",
+                    "application/json"
+                );
+                return;
+            }
 
-            if (idx == -1) {
+            auto normalize = [](const std::string& s) {
+                std::string out = s;
+                std::transform(out.begin(), out.end(), out.begin(), [](unsigned char ch) {
+                    return static_cast<char>(std::tolower(ch));
+                });
+                return out;
+            };
+
+            std::vector<const Sport*> sortedByName;
+            sortedByName.reserve(data_.size());
+            for (const auto& s : data_) sortedByName.push_back(&s);
+
+            std::sort(sortedByName.begin(), sortedByName.end(),
+                      [](const Sport* a, const Sport* b) { return a->name < b->name; });
+
+            const std::string target = normalize(name);
+            int left = 0;
+            int right = static_cast<int>(sortedByName.size()) - 1;
+            const Sport* found = nullptr;
+
+            while (left <= right) {
+                const int mid = left + (right - left) / 2;
+                const std::string cur = normalize(sortedByName[mid]->name);
+                if (cur == target) {
+                    found = sortedByName[mid];
+                    break;
+                }
+                if (cur < target) {
+                    left = mid + 1;
+                } else {
+                    right = mid - 1;
+                }
+            }
+
+            if (!found) {
                 res.status = 404;
                 res.set_content(
                     R"({"status":"error","message":"Record not found"})",
@@ -287,12 +339,25 @@ private:
                 return;
             }
 
-            data_[idx].weight += 1;
+            auto it = std::find_if(data_.begin(), data_.end(), [found](const Sport& s) {
+                return s.sport_id == found->sport_id;
+            });
+            if (it == data_.end()) {
+                res.status = 500;
+                res.set_content(
+                    R"({"status":"error","message":"Record reference is stale"})",
+                    "application/json"
+                );
+                logger_.error("Binary search internal error: found record not present in data vector");
+                return;
+            }
+
+            it->weight += 1;
             storage_.saveAll(data_);
 
             json response = {
                 {"status", "success"},
-                {"record", toJson(data_[idx])}
+                {"record", toJson(*it)}
             };
 
             logger_.info("Binary search success: " + name);

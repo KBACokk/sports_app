@@ -399,13 +399,26 @@ static void drawTreeTextInOrder(const nlohmann::json& node, int depth) {
 
     drawTreeTextInOrder(node["left"], depth + 1);
 
-    std::string prefix(depth * 4, ' ');
-    std::string line = prefix +
-        node["display_value"].get<std::string>() +
-        " [id=" + std::to_string(node["sport_id"].get<int>()) + "]" +
-        " (w:" + std::to_string(node["weight"].get<int>()) + ")";
+    std::string prefix;
+    prefix.reserve(static_cast<size_t>(depth) * 3 + 2);
+    for (int i = 0; i < depth; ++i) {
+        prefix += "│  ";
+    }
+    if (depth > 0) {
+        prefix += "└─";
+    }
 
-    ImGui::TextUnformatted(line.c_str());
+    const std::string displayValue = node.value("display_value", "");
+    const int sportId = node.value("sport_id", 0);
+    const int weight = node.value("weight", 0);
+
+    std::string line = prefix + displayValue +
+        "  [id=" + std::to_string(sportId) + "]" +
+        "  (w:" + std::to_string(weight) + ")";
+
+    const float depthTint = std::min(0.55f, 0.08f * static_cast<float>(depth));
+    const ImVec4 treeColor = ImVec4(0.78f - depthTint, 0.86f - depthTint * 0.4f, 1.0f - depthTint, 1.0f);
+    ImGui::TextColored(treeColor, "%s", line.c_str());
 
     drawTreeTextInOrder(node["right"], depth + 1);
 }

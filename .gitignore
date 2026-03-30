@@ -1,0 +1,42 @@
+# Build directories
+build/
+cmake-build-*/
+*.o
+*.a
+*.so
+*.exe
+*.dll
+*.lib
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Data and logs
+data/
+logs/
+*.log
+*.dat
+*.db
+*.backup
+
+# Assets (keep structure but ignore images)
+assets/images/*.png
+assets/images/*.jpg
+assets/images/*.jpeg
+!assets/images/.gitkeep
+
+# CMake
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+compile_commands.json
+
+# OS
+Thumbs.db
+desktop.ini

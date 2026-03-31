@@ -434,7 +434,7 @@ static void drawRecordCard(const nlohmann::json& rec, bool showDeleteButton, UiS
     // Заголовок карточки
     ImVec4 headerColor = rec.value("olympic_status", false) ? 
                          ImVec4(0.9f, 0.8f, 0.2f, 1.0f) : ImVec4(0.4f, 0.4f, 0.4f, 1.0f);
-    ImGui::TextColored(headerColor, "🏅 %s", rec.value("name", "").c_str());
+    ImGui::TextColored(headerColor, " %s", rec.value("name", "").c_str());
     ImGui::SameLine();
     if (rec.value("olympic_status", false)) {
         ImGui::TextColored(g_warningColor, "(Олимпийский вид)");
@@ -493,7 +493,7 @@ static void drawRecordCard(const nlohmann::json& rec, bool showDeleteButton, UiS
 
         // Правая колонка: превью картинки
         ImGui::TableSetColumnIndex(1);
-        ImGui::Text("📸");
+        ImGui::Text("");
         ImGui::SameLine();
         ImGui::TextDisabled("Фото");
         drawImagePreview(imagePath, 200.0f, 140.0f);
@@ -504,7 +504,7 @@ static void drawRecordCard(const nlohmann::json& rec, bool showDeleteButton, UiS
     // Кнопка удаления
     if (showDeleteButton && ui) {
         ImGui::Separator();
-        if (ImGui::Button("🗑 Удалить", ImVec2(-1, 0))) {
+        if (ImGui::Button("Удалить", ImVec2(-1, 0))) {
             ui->pendingDeleteSportId = rec.value("sport_id", 0);
             ui->deleteConfirmOpen = true;
         }
@@ -890,14 +890,14 @@ int main() {
         
         // ========== ОДНО ГЛАВНОЕ ОКНО ==========
         ImGui::SetNextWindowSize(ImVec2(1200, 850), ImGuiCond_FirstUseEver);
-        if (ImGui::Begin("📦 Sports Directory Manager")) {
+        if (ImGui::Begin(" Sports Directory Manager")) {
             ImGui::Columns(2, "main_layout", true);
             ImGui::SetColumnWidth(0, 380.0f);
 
             ImGui::BeginChild("##left_panel", ImVec2(0, 0), true);
 
-            ImGui::Text("📄 Страница %d из %d", ui.page, std::max(1, (ui.total + ui.limit - 1) / ui.limit));
-            ImGui::Text("📊 Всего записей: %d", ui.total);
+            ImGui::Text("Страница %d из %d", ui.page, std::max(1, (ui.total + ui.limit - 1) / ui.limit));
+            ImGui::Text("Всего записей: %d", ui.total);
 
             if (ImGui::Button("◀ Назад")) {
                 if (ui.page > 1) {
@@ -914,13 +914,13 @@ int main() {
                 }
             }
             ImGui::SameLine();
-            if (ImGui::Button("🔄 Обновить")) {
+            if (ImGui::Button("Обновить")) {
                 fetchPage(ui);
             }
 
             ImGui::Separator();
 
-            ImGui::Text("🔍 Фильтры:");
+            ImGui::Text("Фильтры:");
             if (!ui.knownCategories.empty()) {
                 ImGui::TextDisabled("Категория (выбор):");
 
@@ -979,7 +979,7 @@ int main() {
 
             ImGui::Separator();
 
-            ImGui::Text("📋 Сортировка:");
+            ImGui::Text("Сортировка:");
             const SortField currentSort = sortFieldFromString(std::string(ui.sortField));
             if (ImGui::BeginCombo("Поле", sortFieldToHuman(currentSort), 0)) {
                 constexpr std::array<SortField, 8> options = {
@@ -1018,7 +1018,7 @@ int main() {
                 ImGui::TextDisabled("Включите хотя бы один раздел в меню `Вид`.");
             } else if (ImGui::BeginTabBar("MainTabs")) {
                 if (ui.showRecords) {
-                    if (ImGui::BeginTabItem("📋 Список записей")) {
+                    if (ImGui::BeginTabItem("Список записей")) {
                         ImGui::Text("Найдено записей: %zu", ui.records.size());
                         ImGui::Separator();
                         ImGui::BeginChild("##records_list", ImVec2(0, 0), true);
@@ -1035,7 +1035,7 @@ int main() {
                 }
 
                 if (ui.showAddForm) {
-                    if (ImGui::BeginTabItem("➕ Добавление записи")) {
+                    if (ImGui::BeginTabItem("Добавление записи")) {
                         ImGui::BeginChild("##add_record_tab", ImVec2(0, 0), true);
                         ImGui::InputText("ID (число)*", ui.sportId, sizeof(ui.sportId));
                         ImGui::InputText("Название*", ui.name, sizeof(ui.name));
@@ -1046,7 +1046,7 @@ int main() {
                         ImGui::InputText("Противопоказания", ui.contraindications, sizeof(ui.contraindications));
 
                         ImGui::Separator();
-                        ImGui::Text("📸 Изображение:");
+                        ImGui::Text("Изображение:");
                         ImGui::InputText("Путь к файлу", ui.imagePath, sizeof(ui.imagePath));
                         if (ImGui::Button("Выбрать файл")) {
                             auto selection = pfd::open_file("Выбор изображения", ".", {"Image Files", "*.png *.jpg *.jpeg *.bmp *.tga"}).result();
@@ -1057,11 +1057,11 @@ int main() {
                         }
 
                         if (!ui.selectedImageSourcePath.empty()) {
-                            ImGui::TextColored(g_successColor, "✓ Выбран: %s", ui.selectedImageSourcePath.c_str());
+                            ImGui::TextColored(g_successColor, "Выбран: %s", ui.selectedImageSourcePath.c_str());
                         }
 
                         ImGui::Separator();
-                        if (ImGui::Button("✅ Добавить запись", ImVec2(-1, 0))) {
+                        if (ImGui::Button("Добавить запись", ImVec2(-1, 0))) {
                             addRecord(ui);
                         }
                         ImGui::EndChild();
@@ -1070,7 +1070,7 @@ int main() {
                 }
 
                 if (ui.showTree) {
-                    if (ImGui::BeginTabItem("🌲 Дерево категорий")) {
+                    if (ImGui::BeginTabItem("Дерево категорий")) {
                         if (ImGui::BeginTabBar("TreeTabs")) {
                             for (size_t i = 0; i < g_treeFields.size(); ++i) {
                                 SortField field = g_treeFields[i];
@@ -1148,7 +1148,7 @@ int main() {
                 }
 
                 if (ui.showStats) {
-                    if (ImGui::BeginTabItem("📊 Статистика")) {
+                    if (ImGui::BeginTabItem(" Статистика")) {
                         std::unordered_map<std::string, int> categoryCount;
                         int olympicCount = 0;
                         for (const auto& rec : ui.records) {
@@ -1157,13 +1157,13 @@ int main() {
                             if (rec.value("olympic_status", false)) olympicCount++;
                         }
 
-                        ImGui::Text("📈 Общая статистика:");
+                        ImGui::Text(" Общая статистика:");
                         ImGui::Text("  • Всего записей: %d", ui.total);
                         ImGui::Text("  • Отображается: %zu", ui.records.size());
                         ImGui::Text("  • Олимпийских видов: %d", olympicCount);
 
                         ImGui::Separator();
-                        ImGui::Text("📂 По категориям:");
+                        ImGui::Text(" По категориям:");
                         for (const auto& [cat, count] : categoryCount) {
                             ImGui::Text("  • %s: %d", cat.c_str(), count);
                         }
@@ -1174,7 +1174,7 @@ int main() {
 
                 if (ui.showSearch) {
                     if (ImGui::BeginTabItem("Поиск")) {
-                        ImGui::Text("🔎 Бинарный поиск:");
+                        ImGui::Text("Бинарный поиск:");
                         ImGui::InputText("Имя", ui.searchName, sizeof(ui.searchName));
                         if (ImGui::Button("Найти")) {
                             doBinarySearch(ui);

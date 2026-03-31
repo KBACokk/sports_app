@@ -1,0 +1,547 @@
+МИНИСТЕРСТВО ЦИФРОВОГО РАЗВИТИЯ, СВЯЗИ И
+МАССОВЫХ КОММУНИКАЦИЙ РОССИЙСКОЙ
+ФЕДЕРАЦИИ
+«Сибирский государственный университет
+Телекоммуникаций и информатики»
+(
+СибГУТИ
+)
+Дизайн документ
+По дисциплине
+«
+Архитектура ЭВМ
+»
+Студенты группы ИКС-432:
+А.О. Стаценко; А.А. Пастухов; Т.И. Петров; В.П. Салий
+Преподаватель:
+П.С.
+ 
+Солодов 
+Новосибирск 202
+6
+Оглавление
+<w:tab w:val="left" w:pos="480"/><w:tab w:val="right" w:leader="dot" w:pos="8301"/></w:tabs><w:rPr><w:rFonts w:asciiTheme="minorHAnsi" w:eastAsiaTheme="minorEastAsia" w:hAnsiTheme="minorHAnsi" w:cstheme="minorBidi"/><w:noProof/><w:color w:val="auto"/><w:sz w:val="24"/></w:rPr></w:pPr><w:r><w:fldChar w:fldCharType="begin"/></w:r><w:r><w:instrText xml:space="preserve"> TOC \o "1-3" \h \z \u </w:instrText></w:r><w:r><w:fldChar w:fldCharType="separate"/></w:r><w:hyperlink w:anchor="_Toc224402395" w:history="1"><w:r w:rsidR="00146479" w:rsidRPr="00F418A5"><w:rPr><w:rStyle w:val="af5"/><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:noProof/></w:rPr><w:t>1.
+</w:r><w:r w:rsidR="00146479" w:rsidRPr="00F418A5"><w:rPr><w:rStyle w:val="af5"/><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:noProof/></w:rPr><w:t>Введение и контекст
+</w:r><w:r w:rsidR="00146479"><w:rPr><w:noProof/><w:webHidden/></w:rPr><w:fldChar w:fldCharType="begin"/></w:r><w:r w:rsidR="00146479"><w:rPr><w:noProof/><w:webHidden/></w:rPr><w:instrText xml:space="preserve"> PAGEREF _Toc224402395 \h </w:instrText></w:r><w:r w:rsidR="00146479"><w:rPr><w:noProof/><w:webHidden/></w:rPr></w:r><w:r w:rsidR="00146479"><w:rPr><w:noProof/><w:webHidden/></w:rPr><w:fldChar w:fldCharType="separate"/></w:r><w:r w:rsidR="00146479"><w:rPr><w:noProof/><w:webHidden/></w:rPr><w:t>2
+<w:tab w:val="left" w:pos="480"/><w:tab w:val="right" w:leader="dot" w:pos="8301"/></w:tabs><w:rPr><w:rFonts w:asciiTheme="minorHAnsi" w:eastAsiaTheme="minorEastAsia" w:hAnsiTheme="minorHAnsi" w:cstheme="minorBidi"/><w:noProof/><w:color w:val="auto"/><w:sz w:val="24"/></w:rPr></w:pPr><w:hyperlink w:anchor="_Toc224402396" w:history="1"><w:r w:rsidRPr="00F418A5"><w:rPr><w:rStyle w:val="af5"/><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:noProof/></w:rPr><w:t>2.
+</w:r><w:r w:rsidRPr="00F418A5"><w:rPr><w:rStyle w:val="af5"/><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:noProof/></w:rPr><w:t>Функциональные требования
+</w:r><w:r><w:rPr><w:noProof/><w:webHidden/></w:rPr><w:fldChar w:fldCharType="begin"/></w:r><w:r><w:rPr><w:noProof/><w:webHidden/></w:rPr><w:instrText xml:space="preserve"> PAGEREF _Toc224402396 \h </w:instrText></w:r><w:r><w:rPr><w:noProof/><w:webHidden/></w:rPr></w:r><w:r><w:rPr><w:noProof/><w:webHidden/></w:rPr><w:fldChar w:fldCharType="separate"/></w:r><w:r><w:rPr><w:noProof/><w:webHidden/></w:rPr><w:t>2
+<w:tab w:val="left" w:pos="480"/><w:tab w:val="right" w:leader="dot" w:pos="8301"/></w:tabs><w:rPr><w:rFonts w:asciiTheme="minorHAnsi" w:eastAsiaTheme="minorEastAsia" w:hAnsiTheme="minorHAnsi" w:cstheme="minorBidi"/><w:noProof/><w:color w:val="auto"/><w:sz w:val="24"/></w:rPr></w:pPr><w:hyperlink w:anchor="_Toc224402397" w:history="1"><w:r w:rsidRPr="00F418A5"><w:rPr><w:rStyle w:val="af5"/><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:noProof/></w:rPr><w:t>3.
+</w:r><w:r w:rsidRPr="00F418A5"><w:rPr><w:rStyle w:val="af5"/><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:noProof/></w:rPr><w:t>Нефункциональные требования
+</w:r><w:r><w:rPr><w:noProof/><w:webHidden/></w:rPr><w:fldChar w:fldCharType="begin"/></w:r><w:r><w:rPr><w:noProof/><w:webHidden/></w:rPr><w:instrText xml:space="preserve"> PAGEREF _Toc224402397 \h </w:instrText></w:r><w:r><w:rPr><w:noProof/><w:webHidden/></w:rPr></w:r><w:r><w:rPr><w:noProof/><w:webHidden/></w:rPr><w:fldChar w:fldCharType="separate"/></w:r><w:r><w:rPr><w:noProof/><w:webHidden/></w:rPr><w:t>5
+<w:tab w:val="left" w:pos="480"/><w:tab w:val="right" w:leader="dot" w:pos="8301"/></w:tabs><w:rPr><w:rFonts w:asciiTheme="minorHAnsi" w:eastAsiaTheme="minorEastAsia" w:hAnsiTheme="minorHAnsi" w:cstheme="minorBidi"/><w:noProof/><w:color w:val="auto"/><w:sz w:val="24"/></w:rPr></w:pPr><w:hyperlink w:anchor="_Toc224402398" w:history="1"><w:r w:rsidRPr="00F418A5"><w:rPr><w:rStyle w:val="af5"/><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:noProof/></w:rPr><w:t>4.
+</w:r><w:r w:rsidRPr="00F418A5"><w:rPr><w:rStyle w:val="af5"/><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:noProof/></w:rPr><w:t>Логика и API
+</w:r><w:r><w:rPr><w:noProof/><w:webHidden/></w:rPr><w:fldChar w:fldCharType="begin"/></w:r><w:r><w:rPr><w:noProof/><w:webHidden/></w:rPr><w:instrText xml:space="preserve"> PAGEREF _Toc224402398 \h </w:instrText></w:r><w:r><w:rPr><w:noProof/><w:webHidden/></w:rPr></w:r><w:r><w:rPr><w:noProof/><w:webHidden/></w:rPr><w:fldChar w:fldCharType="separate"/></w:r><w:r><w:rPr><w:noProof/><w:webHidden/></w:rPr><w:t>6
+<w:tab w:val="left" w:pos="480"/><w:tab w:val="right" w:leader="dot" w:pos="8301"/></w:tabs><w:rPr><w:rFonts w:asciiTheme="minorHAnsi" w:eastAsiaTheme="minorEastAsia" w:hAnsiTheme="minorHAnsi" w:cstheme="minorBidi"/><w:noProof/><w:color w:val="auto"/><w:sz w:val="24"/></w:rPr></w:pPr><w:hyperlink w:anchor="_Toc224402399" w:history="1"><w:r w:rsidRPr="00F418A5"><w:rPr><w:rStyle w:val="af5"/><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:noProof/></w:rPr><w:t>5.
+</w:r><w:r w:rsidRPr="00F418A5"><w:rPr><w:rStyle w:val="af5"/><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:noProof/></w:rPr><w:t>Архитектура и технологический стек
+</w:r><w:r><w:rPr><w:noProof/><w:webHidden/></w:rPr><w:fldChar w:fldCharType="begin"/></w:r><w:r><w:rPr><w:noProof/><w:webHidden/></w:rPr><w:instrText xml:space="preserve"> PAGEREF _Toc224402399 \h </w:instrText></w:r><w:r><w:rPr><w:noProof/><w:webHidden/></w:rPr></w:r><w:r><w:rPr><w:noProof/><w:webHidden/></w:rPr><w:fldChar w:fldCharType="separate"/></w:r><w:r><w:rPr><w:noProof/><w:webHidden/></w:rPr><w:t>10
+<w:tab w:val="left" w:pos="480"/><w:tab w:val="right" w:leader="dot" w:pos="8301"/></w:tabs><w:rPr><w:rFonts w:asciiTheme="minorHAnsi" w:eastAsiaTheme="minorEastAsia" w:hAnsiTheme="minorHAnsi" w:cstheme="minorBidi"/><w:noProof/><w:color w:val="auto"/><w:sz w:val="24"/></w:rPr></w:pPr><w:hyperlink w:anchor="_Toc224402400" w:history="1"><w:r w:rsidRPr="00F418A5"><w:rPr><w:rStyle w:val="af5"/><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:noProof/></w:rPr><w:t>6.
+</w:r><w:r w:rsidRPr="00F418A5"><w:rPr><w:rStyle w:val="af5"/><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:noProof/></w:rPr><w:t>Работа с данными (Миграция и бэкапы)
+</w:r><w:r><w:rPr><w:noProof/><w:webHidden/></w:rPr><w:fldChar w:fldCharType="begin"/></w:r><w:r><w:rPr><w:noProof/><w:webHidden/></w:rPr><w:instrText xml:space="preserve"> PAGEREF _Toc224402400 \h </w:instrText></w:r><w:r><w:rPr><w:noProof/><w:webHidden/></w:rPr></w:r><w:r><w:rPr><w:noProof/><w:webHidden/></w:rPr><w:fldChar w:fldCharType="separate"/></w:r><w:r><w:rPr><w:noProof/><w:webHidden/></w:rPr><w:t>10
+<w:tab w:val="left" w:pos="960"/><w:tab w:val="right" w:leader="dot" w:pos="8301"/></w:tabs><w:rPr><w:rFonts w:asciiTheme="minorHAnsi" w:eastAsiaTheme="minorEastAsia" w:hAnsiTheme="minorHAnsi" w:cstheme="minorBidi"/><w:noProof/><w:color w:val="auto"/><w:sz w:val="24"/></w:rPr></w:pPr><w:hyperlink w:anchor="_Toc224402401" w:history="1"><w:r w:rsidRPr="00F418A5"><w:rPr><w:rStyle w:val="af5"/><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:noProof/></w:rPr><w:t>6.1.
+</w:r><w:r w:rsidRPr="00F418A5"><w:rPr><w:rStyle w:val="af5"/><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:noProof/></w:rPr><w:t>Работа с данными
+</w:r><w:r><w:rPr><w:noProof/><w:webHidden/></w:rPr><w:fldChar w:fldCharType="begin"/></w:r><w:r><w:rPr><w:noProof/><w:webHidden/></w:rPr><w:instrText xml:space="preserve"> PAGEREF _Toc224402401 \h </w:instrText></w:r><w:r><w:rPr><w:noProof/><w:webHidden/></w:rPr></w:r><w:r><w:rPr><w:noProof/><w:webHidden/></w:rPr><w:fldChar w:fldCharType="separate"/></w:r><w:r><w:rPr><w:noProof/><w:webHidden/></w:rPr><w:t>10
+<w:tab w:val="left" w:pos="960"/><w:tab w:val="right" w:leader="dot" w:pos="8301"/></w:tabs><w:rPr><w:rFonts w:asciiTheme="minorHAnsi" w:eastAsiaTheme="minorEastAsia" w:hAnsiTheme="minorHAnsi" w:cstheme="minorBidi"/><w:noProof/><w:color w:val="auto"/><w:sz w:val="24"/></w:rPr></w:pPr><w:hyperlink w:anchor="_Toc224402402" w:history="1"><w:r w:rsidRPr="00F418A5"><w:rPr><w:rStyle w:val="af5"/><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:noProof/></w:rPr><w:t>6.2.
+</w:r><w:r w:rsidRPr="00F418A5"><w:rPr><w:rStyle w:val="af5"/><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:noProof/></w:rPr><w:t>Миграция
+</w:r><w:r><w:rPr><w:noProof/><w:webHidden/></w:rPr><w:fldChar w:fldCharType="begin"/></w:r><w:r><w:rPr><w:noProof/><w:webHidden/></w:rPr><w:instrText xml:space="preserve"> PAGEREF _Toc224402402 \h </w:instrText></w:r><w:r><w:rPr><w:noProof/><w:webHidden/></w:rPr></w:r><w:r><w:rPr><w:noProof/><w:webHidden/></w:rPr><w:fldChar w:fldCharType="separate"/></w:r><w:r><w:rPr><w:noProof/><w:webHidden/></w:rPr><w:t>11
+<w:tab w:val="left" w:pos="960"/><w:tab w:val="right" w:leader="dot" w:pos="8301"/></w:tabs><w:rPr><w:rFonts w:asciiTheme="minorHAnsi" w:eastAsiaTheme="minorEastAsia" w:hAnsiTheme="minorHAnsi" w:cstheme="minorBidi"/><w:noProof/><w:color w:val="auto"/><w:sz w:val="24"/></w:rPr></w:pPr><w:hyperlink w:anchor="_Toc224402403" w:history="1"><w:r w:rsidRPr="00F418A5"><w:rPr><w:rStyle w:val="af5"/><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:noProof/></w:rPr><w:t>6.3.
+</w:r><w:r w:rsidRPr="00F418A5"><w:rPr><w:rStyle w:val="af5"/><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:noProof/></w:rPr><w:t>Бэкапы
+</w:r><w:r><w:rPr><w:noProof/><w:webHidden/></w:rPr><w:fldChar w:fldCharType="begin"/></w:r><w:r><w:rPr><w:noProof/><w:webHidden/></w:rPr><w:instrText xml:space="preserve"> PAGEREF _Toc224402403 \h </w:instrText></w:r><w:r><w:rPr><w:noProof/><w:webHidden/></w:rPr></w:r><w:r><w:rPr><w:noProof/><w:webHidden/></w:rPr><w:fldChar w:fldCharType="separate"/></w:r><w:r><w:rPr><w:noProof/><w:webHidden/></w:rPr><w:t>11
+<w:tab w:val="left" w:pos="480"/><w:tab w:val="right" w:leader="dot" w:pos="8301"/></w:tabs><w:rPr><w:rFonts w:asciiTheme="minorHAnsi" w:eastAsiaTheme="minorEastAsia" w:hAnsiTheme="minorHAnsi" w:cstheme="minorBidi"/><w:noProof/><w:color w:val="auto"/><w:sz w:val="24"/></w:rPr></w:pPr><w:hyperlink w:anchor="_Toc224402404" w:history="1"><w:r w:rsidRPr="00F418A5"><w:rPr><w:rStyle w:val="af5"/><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:noProof/></w:rPr><w:t>7.
+</w:r><w:r w:rsidRPr="00F418A5"><w:rPr><w:rStyle w:val="af5"/><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:noProof/></w:rPr><w:t>Ошибки и исключения
+</w:r><w:r><w:rPr><w:noProof/><w:webHidden/></w:rPr><w:fldChar w:fldCharType="begin"/></w:r><w:r><w:rPr><w:noProof/><w:webHidden/></w:rPr><w:instrText xml:space="preserve"> PAGEREF _Toc224402404 \h </w:instrText></w:r><w:r><w:rPr><w:noProof/><w:webHidden/></w:rPr></w:r><w:r><w:rPr><w:noProof/><w:webHidden/></w:rPr><w:fldChar w:fldCharType="separate"/></w:r><w:r><w:rPr><w:noProof/><w:webHidden/></w:rPr><w:t>11
+<w:tab w:val="left" w:pos="960"/><w:tab w:val="right" w:leader="dot" w:pos="8301"/></w:tabs><w:rPr><w:rFonts w:asciiTheme="minorHAnsi" w:eastAsiaTheme="minorEastAsia" w:hAnsiTheme="minorHAnsi" w:cstheme="minorBidi"/><w:noProof/><w:color w:val="auto"/><w:sz w:val="24"/></w:rPr></w:pPr><w:hyperlink w:anchor="_Toc224402405" w:history="1"><w:r w:rsidRPr="00F418A5"><w:rPr><w:rStyle w:val="af5"/><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:noProof/></w:rPr><w:t>7.1.
+</w:r><w:r w:rsidRPr="00F418A5"><w:rPr><w:rStyle w:val="af5"/><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:noProof/></w:rPr><w:t>Обработка ошибок
+</w:r><w:r><w:rPr><w:noProof/><w:webHidden/></w:rPr><w:fldChar w:fldCharType="begin"/></w:r><w:r><w:rPr><w:noProof/><w:webHidden/></w:rPr><w:instrText xml:space="preserve"> PAGEREF _Toc224402405 \h </w:instrText></w:r><w:r><w:rPr><w:noProof/><w:webHidden/></w:rPr></w:r><w:r><w:rPr><w:noProof/><w:webHidden/></w:rPr><w:fldChar w:fldCharType="separate"/></w:r><w:r><w:rPr><w:noProof/><w:webHidden/></w:rPr><w:t>11
+<w:tab w:val="left" w:pos="960"/><w:tab w:val="right" w:leader="dot" w:pos="8301"/></w:tabs><w:rPr><w:rFonts w:asciiTheme="minorHAnsi" w:eastAsiaTheme="minorEastAsia" w:hAnsiTheme="minorHAnsi" w:cstheme="minorBidi"/><w:noProof/><w:color w:val="auto"/><w:sz w:val="24"/></w:rPr></w:pPr><w:hyperlink w:anchor="_Toc224402406" w:history="1"><w:r w:rsidRPr="00F418A5"><w:rPr><w:rStyle w:val="af5"/><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:noProof/></w:rPr><w:t>7.2.
+</w:r><w:r w:rsidRPr="00F418A5"><w:rPr><w:rStyle w:val="af5"/><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:noProof/></w:rPr><w:t>логирование ошибок
+</w:r><w:r><w:rPr><w:noProof/><w:webHidden/></w:rPr><w:fldChar w:fldCharType="begin"/></w:r><w:r><w:rPr><w:noProof/><w:webHidden/></w:rPr><w:instrText xml:space="preserve"> PAGEREF _Toc224402406 \h </w:instrText></w:r><w:r><w:rPr><w:noProof/><w:webHidden/></w:rPr></w:r><w:r><w:rPr><w:noProof/><w:webHidden/></w:rPr><w:fldChar w:fldCharType="separate"/></w:r><w:r><w:rPr><w:noProof/><w:webHidden/></w:rPr><w:t>12
+<w:tab w:val="left" w:pos="480"/><w:tab w:val="right" w:leader="dot" w:pos="8301"/></w:tabs><w:rPr><w:rFonts w:asciiTheme="minorHAnsi" w:eastAsiaTheme="minorEastAsia" w:hAnsiTheme="minorHAnsi" w:cstheme="minorBidi"/><w:noProof/><w:color w:val="auto"/><w:sz w:val="24"/></w:rPr></w:pPr><w:hyperlink w:anchor="_Toc224402407" w:history="1"><w:r w:rsidRPr="00F418A5"><w:rPr><w:rStyle w:val="af5"/><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:noProof/></w:rPr><w:t>8.
+</w:r><w:r w:rsidRPr="00F418A5"><w:rPr><w:rStyle w:val="af5"/><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:noProof/></w:rPr><w:t>Развертывание (Deployment)
+</w:r><w:r><w:rPr><w:noProof/><w:webHidden/></w:rPr><w:fldChar w:fldCharType="begin"/></w:r><w:r><w:rPr><w:noProof/><w:webHidden/></w:rPr><w:instrText xml:space="preserve"> PAGEREF _Toc224402407 \h </w:instrText></w:r><w:r><w:rPr><w:noProof/><w:webHidden/></w:rPr></w:r><w:r><w:rPr><w:noProof/><w:webHidden/></w:rPr><w:fldChar w:fldCharType="separate"/></w:r><w:r><w:rPr><w:noProof/><w:webHidden/></w:rPr><w:t>12
+<w:tab w:val="left" w:pos="960"/><w:tab w:val="right" w:leader="dot" w:pos="8301"/></w:tabs><w:rPr><w:rFonts w:asciiTheme="minorHAnsi" w:eastAsiaTheme="minorEastAsia" w:hAnsiTheme="minorHAnsi" w:cstheme="minorBidi"/><w:noProof/><w:color w:val="auto"/><w:sz w:val="24"/></w:rPr></w:pPr><w:hyperlink w:anchor="_Toc224402408" w:history="1"><w:r w:rsidRPr="00F418A5"><w:rPr><w:rStyle w:val="af5"/><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:noProof/></w:rPr><w:t>8.1.
+</w:r><w:r w:rsidRPr="00F418A5"><w:rPr><w:rStyle w:val="af5"/><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:noProof/></w:rPr><w:t>Инструкция по запуску
+</w:r><w:r><w:rPr><w:noProof/><w:webHidden/></w:rPr><w:fldChar w:fldCharType="begin"/></w:r><w:r><w:rPr><w:noProof/><w:webHidden/></w:rPr><w:instrText xml:space="preserve"> PAGEREF _Toc224402408 \h </w:instrText></w:r><w:r><w:rPr><w:noProof/><w:webHidden/></w:rPr></w:r><w:r><w:rPr><w:noProof/><w:webHidden/></w:rPr><w:fldChar w:fldCharType="separate"/></w:r><w:r><w:rPr><w:noProof/><w:webHidden/></w:rPr><w:t>12
+<w:tab w:val="left" w:pos="960"/><w:tab w:val="right" w:leader="dot" w:pos="8301"/></w:tabs><w:rPr><w:rFonts w:asciiTheme="minorHAnsi" w:eastAsiaTheme="minorEastAsia" w:hAnsiTheme="minorHAnsi" w:cstheme="minorBidi"/><w:noProof/><w:color w:val="auto"/><w:sz w:val="24"/></w:rPr></w:pPr><w:hyperlink w:anchor="_Toc224402409" w:history="1"><w:r w:rsidRPr="00F418A5"><w:rPr><w:rStyle w:val="af5"/><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:noProof/></w:rPr><w:t>8.2.
+</w:r><w:r w:rsidRPr="00F418A5"><w:rPr><w:rStyle w:val="af5"/><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:noProof/></w:rPr><w:t>Окружение
+</w:r><w:r><w:rPr><w:noProof/><w:webHidden/></w:rPr><w:fldChar w:fldCharType="begin"/></w:r><w:r><w:rPr><w:noProof/><w:webHidden/></w:rPr><w:instrText xml:space="preserve"> PAGEREF _Toc224402409 \h </w:instrText></w:r><w:r><w:rPr><w:noProof/><w:webHidden/></w:rPr></w:r><w:r><w:rPr><w:noProof/><w:webHidden/></w:rPr><w:fldChar w:fldCharType="separate"/></w:r><w:r><w:rPr><w:noProof/><w:webHidden/></w:rPr><w:t>12
+<w:tab w:val="left" w:pos="480"/><w:tab w:val="right" w:leader="dot" w:pos="8301"/></w:tabs><w:rPr><w:rFonts w:asciiTheme="minorHAnsi" w:eastAsiaTheme="minorEastAsia" w:hAnsiTheme="minorHAnsi" w:cstheme="minorBidi"/><w:noProof/><w:color w:val="auto"/><w:sz w:val="24"/></w:rPr></w:pPr><w:hyperlink w:anchor="_Toc224402410" w:history="1"><w:r w:rsidRPr="00F418A5"><w:rPr><w:rStyle w:val="af5"/><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:noProof/></w:rPr><w:t>9.
+</w:r><w:r w:rsidRPr="00F418A5"><w:rPr><w:rStyle w:val="af5"/><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:noProof/></w:rPr><w:t>Тестирование
+</w:r><w:r><w:rPr><w:noProof/><w:webHidden/></w:rPr><w:fldChar w:fldCharType="begin"/></w:r><w:r><w:rPr><w:noProof/><w:webHidden/></w:rPr><w:instrText xml:space="preserve"> PAGEREF _Toc224402410 \h </w:instrText></w:r><w:r><w:rPr><w:noProof/><w:webHidden/></w:rPr></w:r><w:r><w:rPr><w:noProof/><w:webHidden/></w:rPr><w:fldChar w:fldCharType="separate"/></w:r><w:r><w:rPr><w:noProof/><w:webHidden/></w:rPr><w:t>13
+<w:tab w:val="left" w:pos="960"/><w:tab w:val="right" w:leader="dot" w:pos="8301"/></w:tabs><w:rPr><w:rFonts w:asciiTheme="minorHAnsi" w:eastAsiaTheme="minorEastAsia" w:hAnsiTheme="minorHAnsi" w:cstheme="minorBidi"/><w:noProof/><w:color w:val="auto"/><w:sz w:val="24"/></w:rPr></w:pPr><w:hyperlink w:anchor="_Toc224402411" w:history="1"><w:r w:rsidRPr="00F418A5"><w:rPr><w:rStyle w:val="af5"/><w:noProof/></w:rPr><w:t>9.1.
+</w:r><w:r w:rsidRPr="00F418A5"><w:rPr><w:rStyle w:val="af5"/><w:noProof/></w:rPr><w:t>Типы тестов
+</w:r><w:r><w:rPr><w:noProof/><w:webHidden/></w:rPr><w:fldChar w:fldCharType="begin"/></w:r><w:r><w:rPr><w:noProof/><w:webHidden/></w:rPr><w:instrText xml:space="preserve"> PAGEREF _Toc224402411 \h </w:instrText></w:r><w:r><w:rPr><w:noProof/><w:webHidden/></w:rPr></w:r><w:r><w:rPr><w:noProof/><w:webHidden/></w:rPr><w:fldChar w:fldCharType="separate"/></w:r><w:r><w:rPr><w:noProof/><w:webHidden/></w:rPr><w:t>13
+<w:tab w:val="left" w:pos="960"/><w:tab w:val="right" w:leader="dot" w:pos="8301"/></w:tabs><w:rPr><w:rFonts w:asciiTheme="minorHAnsi" w:eastAsiaTheme="minorEastAsia" w:hAnsiTheme="minorHAnsi" w:cstheme="minorBidi"/><w:noProof/><w:color w:val="auto"/><w:sz w:val="24"/></w:rPr></w:pPr><w:hyperlink w:anchor="_Toc224402412" w:history="1"><w:r w:rsidRPr="00F418A5"><w:rPr><w:rStyle w:val="af5"/><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:noProof/></w:rPr><w:t>9.2.
+</w:r><w:r w:rsidRPr="00F418A5"><w:rPr><w:rStyle w:val="af5"/><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:noProof/></w:rPr><w:t>Критерии приёмки:
+</w:r><w:r><w:rPr><w:noProof/><w:webHidden/></w:rPr><w:fldChar w:fldCharType="begin"/></w:r><w:r><w:rPr><w:noProof/><w:webHidden/></w:rPr><w:instrText xml:space="preserve"> PAGEREF _Toc224402412 \h </w:instrText></w:r><w:r><w:rPr><w:noProof/><w:webHidden/></w:rPr></w:r><w:r><w:rPr><w:noProof/><w:webHidden/></w:rPr><w:fldChar w:fldCharType="separate"/></w:r><w:r><w:rPr><w:noProof/><w:webHidden/></w:rPr><w:t>13
+<w:tab w:val="left" w:pos="720"/><w:tab w:val="right" w:leader="dot" w:pos="8301"/></w:tabs><w:rPr><w:rFonts w:asciiTheme="minorHAnsi" w:eastAsiaTheme="minorEastAsia" w:hAnsiTheme="minorHAnsi" w:cstheme="minorBidi"/><w:noProof/><w:color w:val="auto"/><w:sz w:val="24"/></w:rPr></w:pPr><w:hyperlink w:anchor="_Toc224402413" w:history="1"><w:r w:rsidRPr="00F418A5"><w:rPr><w:rStyle w:val="af5"/><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:noProof/></w:rPr><w:t>10.
+</w:r><w:r w:rsidRPr="00F418A5"><w:rPr><w:rStyle w:val="af5"/><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:noProof/></w:rPr><w:t>Open Questions (Вопросы)
+</w:r><w:r><w:rPr><w:noProof/><w:webHidden/></w:rPr><w:fldChar w:fldCharType="begin"/></w:r><w:r><w:rPr><w:noProof/><w:webHidden/></w:rPr><w:instrText xml:space="preserve"> PAGEREF _Toc224402413 \h </w:instrText></w:r><w:r><w:rPr><w:noProof/><w:webHidden/></w:rPr></w:r><w:r><w:rPr><w:noProof/><w:webHidden/></w:rPr><w:fldChar w:fldCharType="separate"/></w:r><w:r><w:rPr><w:noProof/><w:webHidden/></w:rPr><w:t>14
+Дизайн-документ (или 
+Technical
+ 
+Spec
+) — это не просто статья, а инженерный чертеж вашего проекта. Его структура может меняться в зависимости от масштаба задачи (новая фича или целый сервис) и методологии (стартап или 
+enterprise
+), но в классическом виде он обычно состоит из следующих блоков:
+Введение и контекст
+Цель этого раздела — ответить на вопрос: «Зачем мы это делаем?»
+Краткое описание:
+ Разработка десктопного приложения для управления справочником видов спорта с реализацией алгоритмов сортировки, поиска и отображения данных с пагинацией и графическими элементами.
+ 
+Бизнес-цель
+: Реализация эффективных алгоритмов поиска, сортировки и отображения данных.
+Текущий статус: 
+(AS-IS)
+: Создание приложения с нуля.
+(TO-BE)
+: Работающее приложение с полным функционалом управления БД.
+Функциональные требования
+· 
+Use
+ 
+Cases
+ (Сценарии использования): Описание шагов пользователя.
+Step
+ 1 – Ввод данных с клавиатуры.
+Пользователь выбирает режим ввода данных
+Система отображает форму ввода
+Пользователь вводит данные о виде спорта
+Система валидирует данные
+Система сохраняет запись в файл
+Step
+ 2 – Просмотр данных с пагинацией.
+Система загружает данные из файла
+Отображает первые 10 записей с логотипами
+Пользователь нажимает «Вперед» / «Назад»
+Система отображает следующую/предыдущую страницу
+Step
+ 3 – Сортировка данных.
+Пользователь выбирает поле для сортировки
+Система применяет алгоритм сортировки 
+Система отображает отсортированные данные
+Step
+ 4 – Двоичный поиск.
+Пользователь вводит поисковый запрос
+Система применяет двоичный поиск 
+Система отображает найденные результаты
+Step
+ 5 – Построение оптимального дерева поиска.
+Пользователь выбирает функционал построения дерева
+Система строит оптимальное дерево поиска
+Система отображает результат на экран.
+Счастливый путь (Happy 
+Path
+): 
+Пользователь запускает приложение -> Загружает БД -> Просматривает страницу 1 -> Ищет вид спорта -> Находит.
+Пользователь запускает приложение -> Загружает БД -> Выбирает функционал добавления новой записи -> Вводит новую запись -> Запись сохраняется в БД
+.
+Рис 1. – Корректный путь работы программы.
+Альтернативные пути: 
+Пользователь запускает приложение -> Загружает БД -> Не находит данные о записи -> Добавляет новую запись.
+Рис 2. - Альтернативный путь работы программы.
+Границы проекта (
+Scope
+):
+ 
+Ввод данных с клавиатуры, хранение БД в файле, отображение изображений, сортировка данных, двоичный поиск, дерево оптимального поиска
+ на 
+x
+86 архитектуре.
+Нефункциональные требования
+Как система должна работать (качество)
+:
+<w:tblPr><w:tblStyle w:val="a4"/><w:tblW w:w="0" w:type="auto"/><w:tblInd w:w="-5" w:type="dxa"/><w:tblLook w:val="04A0" w:firstRow="1" w:lastRow="0" w:firstColumn="1" w:lastColumn="0" w:noHBand="0" w:noVBand="1"/></w:tblPr><w:tblGrid><w:gridCol w:w="4150"/><w:gridCol w:w="4151"/></w:tblGrid><w:tr w:rsidR="00DF347C" w:rsidRPr="00EA3196" w14:paraId="749CB7A6" w14:textId="77777777" w:rsidTr="00FD7ED5"><w:tc><w:tcPr><w:tcW w:w="4150" w:type="dxa"/></w:tcPr><w:p w14:paraId="4924C52F" w14:textId="77777777" w:rsidR="00DF347C" w:rsidRPr="00EA3196" w:rsidRDefault="00DF347C" w:rsidP="00FD7ED5"><w:pPr><w:spacing w:after="0" w:line="360" w:lineRule="auto"/><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:lang w:val="en-US"/></w:rPr></w:pPr><w:r w:rsidRPr="00EA3196"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:b/><w:bCs/></w:rPr><w:t>Параметр
+<w:tcPr><w:tcW w:w="4151" w:type="dxa"/></w:tcPr><w:p w14:paraId="22AD7CE2" w14:textId="77777777" w:rsidR="00DF347C" w:rsidRPr="00EA3196" w:rsidRDefault="00DF347C" w:rsidP="00FD7ED5"><w:pPr><w:spacing w:after="0" w:line="360" w:lineRule="auto"/><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:lang w:val="en-US"/></w:rPr></w:pPr><w:r w:rsidRPr="00EA3196"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:b/><w:bCs/></w:rPr><w:t>Требование
+<w:tc><w:tcPr><w:tcW w:w="4150" w:type="dxa"/></w:tcPr><w:p w14:paraId="3B3E5B6F" w14:textId="77777777" w:rsidR="00DF347C" w:rsidRPr="00EA3196" w:rsidRDefault="00DF347C" w:rsidP="00FD7ED5"><w:pPr><w:spacing w:after="0" w:line="360" w:lineRule="auto"/><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr></w:pPr><w:r w:rsidRPr="00EA3196"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr><w:t>Время отклика интерфейса
+<w:tcPr><w:tcW w:w="4151" w:type="dxa"/></w:tcPr><w:p w14:paraId="62467C2D" w14:textId="6AFB8906" w:rsidR="00DF347C" w:rsidRPr="00EA3196" w:rsidRDefault="00DF347C" w:rsidP="00FD7ED5"><w:pPr><w:spacing w:after="0" w:line="360" w:lineRule="auto"/><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr></w:pPr><w:proofErr w:type="gramStart"/><w:r w:rsidRPr="00EA3196"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr><w:t xml:space="preserve">< 
+1
+00
+ мс
+<w:tc><w:tcPr><w:tcW w:w="4150" w:type="dxa"/></w:tcPr><w:p w14:paraId="134918B9" w14:textId="77777777" w:rsidR="00DF347C" w:rsidRPr="00EA3196" w:rsidRDefault="00DF347C" w:rsidP="00FD7ED5"><w:pPr><w:spacing w:after="0" w:line="360" w:lineRule="auto"/><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:lang w:val="en-US"/></w:rPr></w:pPr><w:r w:rsidRPr="00EA3196"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr><w:t>Время загрузки страницы
+<w:tcPr><w:tcW w:w="4151" w:type="dxa"/></w:tcPr><w:p w14:paraId="76461ADD" w14:textId="77777777" w:rsidR="00DF347C" w:rsidRPr="00EA3196" w:rsidRDefault="00DF347C" w:rsidP="00FD7ED5"><w:pPr><w:spacing w:after="0" w:line="360" w:lineRule="auto"/><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:lang w:val="en-US"/></w:rPr></w:pPr><w:proofErr w:type="gramStart"/><w:r w:rsidRPr="00EA3196"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr><w:t>< 500
+ мс
+<w:tc><w:tcPr><w:tcW w:w="4150" w:type="dxa"/></w:tcPr><w:p w14:paraId="57855DAC" w14:textId="77777777" w:rsidR="00DF347C" w:rsidRPr="00EA3196" w:rsidRDefault="00DF347C" w:rsidP="00FD7ED5"><w:pPr><w:spacing w:after="0" w:line="360" w:lineRule="auto"/><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:lang w:val="en-US"/></w:rPr></w:pPr><w:r w:rsidRPr="00EA3196"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr><w:t>Время выполнения сортировки
+<w:tcPr><w:tcW w:w="4151" w:type="dxa"/></w:tcPr><w:p w14:paraId="32678067" w14:textId="699C442C" w:rsidR="00DF347C" w:rsidRPr="00EA3196" w:rsidRDefault="00DF347C" w:rsidP="00FD7ED5"><w:pPr><w:spacing w:after="0" w:line="360" w:lineRule="auto"/><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:lang w:val="en-US"/></w:rPr></w:pPr><w:proofErr w:type="gramStart"/><w:r w:rsidRPr="00EA3196"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr><w:t xml:space="preserve">< 
+2
+00
+ мс
+<w:tc><w:tcPr><w:tcW w:w="4150" w:type="dxa"/></w:tcPr><w:p w14:paraId="226CEC5E" w14:textId="77777777" w:rsidR="00DF347C" w:rsidRPr="00EA3196" w:rsidRDefault="00DF347C" w:rsidP="00FD7ED5"><w:pPr><w:spacing w:after="0" w:line="360" w:lineRule="auto"/><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:lang w:val="en-US"/></w:rPr></w:pPr><w:r w:rsidRPr="00EA3196"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr><w:t>Время выполнения поиска
+<w:tcPr><w:tcW w:w="4151" w:type="dxa"/></w:tcPr><w:p w14:paraId="47B4A0AC" w14:textId="5C96E26A" w:rsidR="00DF347C" w:rsidRPr="00EA3196" w:rsidRDefault="00DF347C" w:rsidP="00FD7ED5"><w:pPr><w:spacing w:after="0" w:line="360" w:lineRule="auto"/><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:lang w:val="en-US"/></w:rPr></w:pPr><w:proofErr w:type="gramStart"/><w:r w:rsidRPr="00EA3196"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr><w:t xml:space="preserve">< 
+1
+00
+ мс
+Безопасность:
+ 
+<w:tblPr><w:tblStyle w:val="a4"/><w:tblW w:w="0" w:type="auto"/><w:tblInd w:w="-5" w:type="dxa"/><w:tblLook w:val="04A0" w:firstRow="1" w:lastRow="0" w:firstColumn="1" w:lastColumn="0" w:noHBand="0" w:noVBand="1"/></w:tblPr><w:tblGrid><w:gridCol w:w="4150"/><w:gridCol w:w="4151"/></w:tblGrid><w:tr w:rsidR="00DF347C" w:rsidRPr="00EA3196" w14:paraId="4A4D8F8B" w14:textId="77777777" w:rsidTr="00FD7ED5"><w:tc><w:tcPr><w:tcW w:w="4150" w:type="dxa"/></w:tcPr><w:p w14:paraId="0206F88F" w14:textId="77777777" w:rsidR="00DF347C" w:rsidRPr="00EA3196" w:rsidRDefault="00DF347C" w:rsidP="00FD7ED5"><w:pPr><w:spacing w:after="0" w:line="360" w:lineRule="auto"/><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:lang w:val="en-US"/></w:rPr></w:pPr><w:r w:rsidRPr="00EA3196"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:b/><w:bCs/></w:rPr><w:t>Параметр
+<w:tcPr><w:tcW w:w="4151" w:type="dxa"/></w:tcPr><w:p w14:paraId="607A2E42" w14:textId="77777777" w:rsidR="00DF347C" w:rsidRPr="00EA3196" w:rsidRDefault="00DF347C" w:rsidP="00FD7ED5"><w:pPr><w:spacing w:after="0" w:line="360" w:lineRule="auto"/><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:lang w:val="en-US"/></w:rPr></w:pPr><w:r w:rsidRPr="00EA3196"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:b/><w:bCs/></w:rPr><w:t>Требование
+<w:tc><w:tcPr><w:tcW w:w="4150" w:type="dxa"/></w:tcPr><w:p w14:paraId="1C8891C1" w14:textId="77777777" w:rsidR="00DF347C" w:rsidRPr="00EA3196" w:rsidRDefault="00DF347C" w:rsidP="00FD7ED5"><w:pPr><w:spacing w:after="0" w:line="360" w:lineRule="auto"/><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr></w:pPr><w:r w:rsidRPr="00EA3196"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr><w:t>Персональные данные
+<w:tcPr><w:tcW w:w="4151" w:type="dxa"/></w:tcPr><w:p w14:paraId="3E4C4CD0" w14:textId="77777777" w:rsidR="00DF347C" w:rsidRPr="00EA3196" w:rsidRDefault="00DF347C" w:rsidP="00FD7ED5"><w:pPr><w:spacing w:after="0" w:line="360" w:lineRule="auto"/><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr></w:pPr><w:r w:rsidRPr="00EA3196"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr><w:t>Не обрабатываются
+<w:tc><w:tcPr><w:tcW w:w="4150" w:type="dxa"/></w:tcPr><w:p w14:paraId="76C4681A" w14:textId="77777777" w:rsidR="00DF347C" w:rsidRPr="00EA3196" w:rsidRDefault="00DF347C" w:rsidP="00FD7ED5"><w:pPr><w:spacing w:after="0" w:line="360" w:lineRule="auto"/><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:lang w:val="en-US"/></w:rPr></w:pPr><w:r w:rsidRPr="00EA3196"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr><w:t>Хранение данных
+<w:tcPr><w:tcW w:w="4151" w:type="dxa"/></w:tcPr><w:p w14:paraId="67DAA328" w14:textId="77777777" w:rsidR="00DF347C" w:rsidRPr="00EA3196" w:rsidRDefault="00DF347C" w:rsidP="00FD7ED5"><w:pPr><w:spacing w:after="0" w:line="360" w:lineRule="auto"/><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:lang w:val="en-US"/></w:rPr></w:pPr><w:r w:rsidRPr="00EA3196"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr><w:t>Локальный файл
+Надежность:
+ 
+Хранение и обработка данных на локальной машине позволяет обеспечивать 
+SLA
+ более 99.9%
+.
+ 
+Хранение данных на резервной системе, обеспечивает высокую безопасность и отказоустойчивость данных.
+Логика и API
+ 
+Диаграммы последовательности (
+Sequence
+ 
+Diagrams
+):
+Визуализация того, как компоненты общаются между собой.
+Рис 3. – Логика работы 
+API.
+Контракты API:
+<w:tab w:val="left" w:pos="2070"/></w:tabs><w:spacing w:after="2"/><w:ind w:left="0" w:firstLine="0"/><w:jc w:val="center"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:sz w:val="28"/><w:szCs w:val="28"/></w:rPr></w:pPr><w:r w:rsidRPr="00EA3196"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:sz w:val="28"/><w:szCs w:val="28"/></w:rPr><w:t>Рис 4. – Взаимодействие с приложением.
+Примеры 
+curl
+-запросов:
+Запрос
+curl -X GET "http://localhost:8080/
+api
+/
+sports?page
+=1&limit=10" \
+  -H "Content-Type: application/
+json
+"
+Ответ
+ (200 OK):
+{
+  "status": "success",
+  "data": {
+    "page": 1,
+    "limit": 10,
+    "total": 35,
+    "records": [
+      {
+        "
+sport
+_id
+": 1,
+        
+"name": "
+Футбол
+",
+        "category": "
+Игровые
+ 
+виды
+",
+        
+"
+olympic
+_status
+": true,
+        "description": "
+Командный
+ 
+вид
+ 
+спорта
+ 
+с
+ 
+мячом
+",
+        "
+governing
+_body
+": "FIFA",
+        "
+image
+_path
+": "images/football.png",
+        
+"
+medical_contraindications
+": "Заболевания сердечно-сосудистой системы"
+      
+},
+      {
+        "
+sport
+_id
+": 2,
+        "name": "
+Баскетбол
+",
+        "category": "
+Игровые
+ 
+виды
+",
+        "
+olympic
+_status
+": true,
+        "description": "
+Игра
+ 
+с
+ 
+мячом
+ 
+и
+ 
+корзиной
+",
+        "
+governing
+_body
+": "FIBA",
+        "
+image
+_path
+": "images/basketball.png",
+        
+"
+medical
+_contraindications
+": "
+Травмы
+ 
+коленей
+ 
+и
+ 
+голеностопов
+"
+      }
+    ]
+  }
+}
+Ответ
+ (404 Not Found)
+{
+  "status": "error",
+  "data": {
+    "found": false,
+    "message": "
+Запись
+ 
+не
+ 
+найдена
+"
+  },
+  "
+error
+_code
+": "SPORT_NOT_FOUND"
+}
+Архитектура и технологический стек
+Структура БД (таблицы, поля, индексы, связи).
+С
+ущностью системы является справочник видов спорта. Несмотря на физическое хранение в бинарном файле, логическая структура соответствует реляционной таблице. В текущей версии предусмотрена одна таблица, поэтому связи не реализованы. Поля текущей структуры представлены ниже:
+<w:tblPr><w:tblStyle w:val="a4"/><w:tblW w:w="0" w:type="auto"/><w:tblInd w:w="-5" w:type="dxa"/><w:tblLook w:val="04A0" w:firstRow="1" w:lastRow="0" w:firstColumn="1" w:lastColumn="0" w:noHBand="0" w:noVBand="1"/></w:tblPr><w:tblGrid><w:gridCol w:w="3536"/><w:gridCol w:w="4770"/></w:tblGrid><w:tr w:rsidR="000F16AD" w14:paraId="12EB337D" w14:textId="77777777" w:rsidTr="00007D85"><w:trPr><w:trHeight w:hRule="exact" w:val="851"/></w:trPr><w:tc><w:tcPr><w:tcW w:w="3536" w:type="dxa"/></w:tcPr><w:p w14:paraId="36403BD1" w14:textId="77777777" w:rsidR="000F16AD" w:rsidRPr="008E594C" w:rsidRDefault="000F16AD" w:rsidP="00007D85"><w:pPr><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:sz w:val="28"/><w:szCs w:val="28"/></w:rPr></w:pPr><w:r w:rsidRPr="008E594C"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:sz w:val="28"/><w:szCs w:val="28"/></w:rPr><w:t>Поле
+<w:tcPr><w:tcW w:w="0" w:type="auto"/></w:tcPr><w:p w14:paraId="5943A3AE" w14:textId="77777777" w:rsidR="000F16AD" w:rsidRPr="008E594C" w:rsidRDefault="000F16AD" w:rsidP="00007D85"><w:pPr><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:sz w:val="28"/><w:szCs w:val="28"/></w:rPr></w:pPr><w:r w:rsidRPr="008E594C"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:sz w:val="28"/><w:szCs w:val="28"/></w:rPr><w:t>Описание
+<w:trPr><w:trHeight w:hRule="exact" w:val="851"/></w:trPr><w:tc><w:tcPr><w:tcW w:w="3536" w:type="dxa"/></w:tcPr><w:p w14:paraId="6422FDC0" w14:textId="77777777" w:rsidR="000F16AD" w:rsidRPr="008E594C" w:rsidRDefault="000F16AD" w:rsidP="00007D85"><w:pPr><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:sz w:val="28"/><w:szCs w:val="28"/></w:rPr></w:pPr><w:proofErr w:type="spellStart"/><w:r w:rsidRPr="008E594C"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:sz w:val="28"/><w:szCs w:val="28"/></w:rPr><w:t>sport_id
+<w:tcPr><w:tcW w:w="0" w:type="auto"/></w:tcPr><w:p w14:paraId="2D6DA98F" w14:textId="77777777" w:rsidR="000F16AD" w:rsidRPr="008E594C" w:rsidRDefault="000F16AD" w:rsidP="00007D85"><w:pPr><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:sz w:val="28"/><w:szCs w:val="28"/></w:rPr></w:pPr><w:r w:rsidRPr="008E594C"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:sz w:val="28"/><w:szCs w:val="28"/></w:rPr><w:t>Уникальный идентификатор вида спорта (первичный ключ)
+<w:trPr><w:trHeight w:hRule="exact" w:val="851"/></w:trPr><w:tc><w:tcPr><w:tcW w:w="3536" w:type="dxa"/></w:tcPr><w:p w14:paraId="435B4653" w14:textId="77777777" w:rsidR="000F16AD" w:rsidRPr="008E594C" w:rsidRDefault="000F16AD" w:rsidP="00007D85"><w:pPr><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:sz w:val="28"/><w:szCs w:val="28"/></w:rPr></w:pPr><w:proofErr w:type="spellStart"/><w:r w:rsidRPr="008E594C"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:sz w:val="28"/><w:szCs w:val="28"/></w:rPr><w:t>name
+<w:tcPr><w:tcW w:w="0" w:type="auto"/></w:tcPr><w:p w14:paraId="1FA5B7C5" w14:textId="77777777" w:rsidR="000F16AD" w:rsidRPr="008E594C" w:rsidRDefault="000F16AD" w:rsidP="00007D85"><w:pPr><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:sz w:val="28"/><w:szCs w:val="28"/></w:rPr></w:pPr><w:r w:rsidRPr="008E594C"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:sz w:val="28"/><w:szCs w:val="28"/></w:rPr><w:t>Название вида спорта (например, "Футбол", "Плавание")
+<w:trPr><w:trHeight w:hRule="exact" w:val="851"/></w:trPr><w:tc><w:tcPr><w:tcW w:w="3536" w:type="dxa"/></w:tcPr><w:p w14:paraId="79774BA1" w14:textId="77777777" w:rsidR="000F16AD" w:rsidRPr="008E594C" w:rsidRDefault="000F16AD" w:rsidP="00007D85"><w:pPr><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:sz w:val="28"/><w:szCs w:val="28"/></w:rPr></w:pPr><w:proofErr w:type="spellStart"/><w:r w:rsidRPr="008E594C"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:sz w:val="28"/><w:szCs w:val="28"/></w:rPr><w:t>category
+<w:tcPr><w:tcW w:w="0" w:type="auto"/></w:tcPr><w:p w14:paraId="709D52F3" w14:textId="77777777" w:rsidR="000F16AD" w:rsidRPr="008E594C" w:rsidRDefault="000F16AD" w:rsidP="00007D85"><w:pPr><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:sz w:val="28"/><w:szCs w:val="28"/></w:rPr></w:pPr><w:r w:rsidRPr="008E594C"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:sz w:val="28"/><w:szCs w:val="28"/></w:rPr><w:t>Категория вида спорта (например, "Игровые виды", "Водные виды")
+<w:trPr><w:trHeight w:hRule="exact" w:val="851"/></w:trPr><w:tc><w:tcPr><w:tcW w:w="3536" w:type="dxa"/></w:tcPr><w:p w14:paraId="1059EA62" w14:textId="77777777" w:rsidR="000F16AD" w:rsidRPr="008E594C" w:rsidRDefault="000F16AD" w:rsidP="00007D85"><w:pPr><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:sz w:val="28"/><w:szCs w:val="28"/></w:rPr></w:pPr><w:proofErr w:type="spellStart"/><w:r w:rsidRPr="008E594C"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:sz w:val="28"/><w:szCs w:val="28"/></w:rPr><w:t>olympic_status
+<w:tcPr><w:tcW w:w="0" w:type="auto"/></w:tcPr><w:p w14:paraId="64816959" w14:textId="77777777" w:rsidR="000F16AD" w:rsidRPr="008E594C" w:rsidRDefault="000F16AD" w:rsidP="00007D85"><w:pPr><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:sz w:val="28"/><w:szCs w:val="28"/></w:rPr></w:pPr><w:r w:rsidRPr="008E594C"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:sz w:val="28"/><w:szCs w:val="28"/></w:rPr><w:t>Флаг олимпийского вида спорта (
+true
+/
+false
+)
+<w:trPr><w:trHeight w:hRule="exact" w:val="851"/></w:trPr><w:tc><w:tcPr><w:tcW w:w="3536" w:type="dxa"/></w:tcPr><w:p w14:paraId="22A64159" w14:textId="77777777" w:rsidR="000F16AD" w:rsidRPr="008E594C" w:rsidRDefault="000F16AD" w:rsidP="00007D85"><w:pPr><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:sz w:val="28"/><w:szCs w:val="28"/></w:rPr></w:pPr><w:proofErr w:type="spellStart"/><w:r w:rsidRPr="008E594C"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:sz w:val="28"/><w:szCs w:val="28"/></w:rPr><w:t>description
+<w:tcPr><w:tcW w:w="0" w:type="auto"/></w:tcPr><w:p w14:paraId="5F25B08C" w14:textId="77777777" w:rsidR="000F16AD" w:rsidRPr="008E594C" w:rsidRDefault="000F16AD" w:rsidP="00007D85"><w:pPr><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:sz w:val="28"/><w:szCs w:val="28"/></w:rPr></w:pPr><w:r w:rsidRPr="008E594C"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:sz w:val="28"/><w:szCs w:val="28"/></w:rPr><w:t>Подробное описание дисциплины и её особенностей
+<w:trPr><w:trHeight w:hRule="exact" w:val="995"/></w:trPr><w:tc><w:tcPr><w:tcW w:w="3536" w:type="dxa"/></w:tcPr><w:p w14:paraId="55BE1E30" w14:textId="77777777" w:rsidR="000F16AD" w:rsidRPr="008E594C" w:rsidRDefault="000F16AD" w:rsidP="00007D85"><w:pPr><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:sz w:val="28"/><w:szCs w:val="28"/></w:rPr></w:pPr><w:proofErr w:type="spellStart"/><w:r w:rsidRPr="008E594C"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:sz w:val="28"/><w:szCs w:val="28"/></w:rPr><w:t>governing_body
+<w:tcPr><w:tcW w:w="0" w:type="auto"/></w:tcPr><w:p w14:paraId="7998F000" w14:textId="77777777" w:rsidR="000F16AD" w:rsidRPr="008E594C" w:rsidRDefault="000F16AD" w:rsidP="00007D85"><w:pPr><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:sz w:val="28"/><w:szCs w:val="28"/></w:rPr></w:pPr><w:r w:rsidRPr="008E594C"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:sz w:val="28"/><w:szCs w:val="28"/></w:rPr><w:t>Международная федерация/организация, управляющая видом спорта (например, "FIFA")
+<w:trPr><w:trHeight w:hRule="exact" w:val="851"/></w:trPr><w:tc><w:tcPr><w:tcW w:w="3536" w:type="dxa"/></w:tcPr><w:p w14:paraId="4D57608E" w14:textId="77777777" w:rsidR="000F16AD" w:rsidRPr="008E594C" w:rsidRDefault="000F16AD" w:rsidP="00007D85"><w:pPr><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:sz w:val="28"/><w:szCs w:val="28"/></w:rPr></w:pPr><w:proofErr w:type="spellStart"/><w:r w:rsidRPr="008E594C"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:sz w:val="28"/><w:szCs w:val="28"/></w:rPr><w:t>image_path
+<w:tcPr><w:tcW w:w="0" w:type="auto"/></w:tcPr><w:p w14:paraId="2C1FF67D" w14:textId="77777777" w:rsidR="000F16AD" w:rsidRPr="008E594C" w:rsidRDefault="000F16AD" w:rsidP="00007D85"><w:pPr><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:sz w:val="28"/><w:szCs w:val="28"/></w:rPr></w:pPr><w:r w:rsidRPr="008E594C"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:sz w:val="28"/><w:szCs w:val="28"/></w:rPr><w:t>Путь к файлу изображения (логотип или иллюстрация вида спорта)
+<w:trPr><w:trHeight w:hRule="exact" w:val="992"/></w:trPr><w:tc><w:tcPr><w:tcW w:w="3536" w:type="dxa"/></w:tcPr><w:p w14:paraId="692DC06B" w14:textId="77777777" w:rsidR="000F16AD" w:rsidRPr="008E594C" w:rsidRDefault="000F16AD" w:rsidP="00007D85"><w:pPr><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:sz w:val="28"/><w:szCs w:val="28"/></w:rPr></w:pPr><w:proofErr w:type="spellStart"/><w:r w:rsidRPr="008E594C"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:sz w:val="28"/><w:szCs w:val="28"/></w:rPr><w:t>medical_contraindications
+<w:tcPr><w:tcW w:w="0" w:type="auto"/></w:tcPr><w:p w14:paraId="1B3BAD21" w14:textId="77777777" w:rsidR="000F16AD" w:rsidRPr="008E594C" w:rsidRDefault="000F16AD" w:rsidP="00007D85"><w:pPr><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:sz w:val="28"/><w:szCs w:val="28"/></w:rPr></w:pPr><w:r w:rsidRPr="008E594C"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:sz w:val="28"/><w:szCs w:val="28"/></w:rPr><w:t>Перечень медицинских противопоказаний для занятий данным видом спорта
+Для обеспечения требований к производительности
+ 
+предусмотрены следующие индексы:
+По полю 
+sport_id
+ (для быстрой выборки по ID).
+По полю 
+name
+ (необходим для реализации двоичного поиска).
+По полю 
+category
+ (необходим для реализации сортировки).
+Схема решения
+: Схема будет представлять из себя монолитное десктопное приложение (
+Layered
+ Architecture: UI -> Logic -> Data Layer)
+.
+ 
+Выбор технологий
+:
+ 
+работа с СУБД и реализация механизмов логики приложения был выбран язык 
+C
+++, так как он может обеспечивать высокую производительность и разборчивый синтаксис.
+Работа с данными (Миграция и бэкапы)
+Работа с данными
+Формат хранения
+ – 
+Бинарный
+ 
+файл
+Поля хранимых данных:
+[
+sport_id
+ (4 bytes)]
+[
+name_length
+ (2 bytes
+)][
+name data]
+[
+category_length
+ (2 bytes
+)][
+category data]
+[
+olympic_status
+ (1 byte)]
+[
+description_length
+ (2 bytes
+)][
+description data]
+[
+governing_body_length
+ (2 bytes
+)][
+governing_body
+ data]
+[
+image_path_length
+ (2 bytes
+)][
+image_path
+ data]
+[medical_contraindications_length(2bytes
+)][
+medical_contraindications data
+Миграция
+<w:tblPr><w:tblStyle w:val="a4"/><w:tblW w:w="0" w:type="auto"/><w:tblLook w:val="04A0" w:firstRow="1" w:lastRow="0" w:firstColumn="1" w:lastColumn="0" w:noHBand="0" w:noVBand="1"/></w:tblPr><w:tblGrid><w:gridCol w:w="2767"/><w:gridCol w:w="2767"/><w:gridCol w:w="2767"/></w:tblGrid><w:tr w:rsidR="004A793F" w:rsidRPr="00EA3196" w14:paraId="17A23995" w14:textId="77777777" w:rsidTr="00FD7ED5"><w:tc><w:tcPr><w:tcW w:w="2767" w:type="dxa"/></w:tcPr><w:p w14:paraId="51B6714C" w14:textId="77777777" w:rsidR="004A793F" w:rsidRPr="00EA3196" w:rsidRDefault="004A793F" w:rsidP="00FD7ED5"><w:pPr><w:spacing w:after="0" w:line="360" w:lineRule="auto"/><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr></w:pPr><w:r w:rsidRPr="00EA3196"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:b/><w:bCs/></w:rPr><w:t>Версия
+<w:tcPr><w:tcW w:w="2767" w:type="dxa"/></w:tcPr><w:p w14:paraId="5F25572F" w14:textId="77777777" w:rsidR="004A793F" w:rsidRPr="00EA3196" w:rsidRDefault="004A793F" w:rsidP="00FD7ED5"><w:pPr><w:spacing w:after="0" w:line="360" w:lineRule="auto"/><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr></w:pPr><w:r w:rsidRPr="00EA3196"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:b/><w:bCs/></w:rPr><w:t>Изменения
+<w:tcPr><w:tcW w:w="2767" w:type="dxa"/></w:tcPr><w:p w14:paraId="368E9977" w14:textId="77777777" w:rsidR="004A793F" w:rsidRPr="00EA3196" w:rsidRDefault="004A793F" w:rsidP="00FD7ED5"><w:pPr><w:spacing w:after="0" w:line="360" w:lineRule="auto"/><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr></w:pPr><w:r w:rsidRPr="00EA3196"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:b/><w:bCs/></w:rPr><w:t>Статус
+<w:tc><w:tcPr><w:tcW w:w="2767" w:type="dxa"/></w:tcPr><w:p w14:paraId="4587CA51" w14:textId="77777777" w:rsidR="004A793F" w:rsidRPr="00EA3196" w:rsidRDefault="004A793F" w:rsidP="00FD7ED5"><w:pPr><w:spacing w:after="0" w:line="360" w:lineRule="auto"/><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr></w:pPr><w:r w:rsidRPr="00EA3196"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr><w:t>v1.0
+<w:tcPr><w:tcW w:w="2767" w:type="dxa"/></w:tcPr><w:p w14:paraId="05696051" w14:textId="77777777" w:rsidR="004A793F" w:rsidRPr="00EA3196" w:rsidRDefault="004A793F" w:rsidP="00FD7ED5"><w:pPr><w:spacing w:after="0" w:line="360" w:lineRule="auto"/><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr></w:pPr><w:r w:rsidRPr="00EA3196"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr><w:t>Начальная структура БД (8 полей)
+<w:tcPr><w:tcW w:w="2767" w:type="dxa"/></w:tcPr><w:p w14:paraId="36A0C391" w14:textId="62798A7B" w:rsidR="004A793F" w:rsidRPr="00EA3196" w:rsidRDefault="004A793F" w:rsidP="00FD7ED5"><w:pPr><w:spacing w:after="0" w:line="360" w:lineRule="auto"/><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr></w:pPr><w:r w:rsidRPr="00EA3196"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr><w:t>Нынешняя разрабатываемая версия приложения
+<w:tc><w:tcPr><w:tcW w:w="2767" w:type="dxa"/></w:tcPr><w:p w14:paraId="26E19AC5" w14:textId="0ED80124" w:rsidR="004A793F" w:rsidRPr="00EA3196" w:rsidRDefault="004A793F" w:rsidP="00FD7ED5"><w:pPr><w:spacing w:after="0" w:line="360" w:lineRule="auto"/><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr></w:pPr><w:r w:rsidRPr="00EA3196"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr><w:t>V2.0
+<w:tcPr><w:tcW w:w="2767" w:type="dxa"/></w:tcPr><w:p w14:paraId="37FB3861" w14:textId="37246726" w:rsidR="004A793F" w:rsidRPr="00EA3196" w:rsidRDefault="002C5F8C" w:rsidP="00FD7ED5"><w:pPr><w:spacing w:after="0" w:line="360" w:lineRule="auto"/><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr></w:pPr><w:r w:rsidRPr="00EA3196"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr><w:t>Обновление полей, хранимых в БД.
+<w:tcPr><w:tcW w:w="2767" w:type="dxa"/></w:tcPr><w:p w14:paraId="3BAEBFA6" w14:textId="1E775198" w:rsidR="004A793F" w:rsidRPr="00EA3196" w:rsidRDefault="004A793F" w:rsidP="00FD7ED5"><w:pPr><w:spacing w:after="0" w:line="360" w:lineRule="auto"/><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr></w:pPr><w:r w:rsidRPr="00EA3196"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr><w:t>Запланировано в дальнейшей разработке приложения.
+Бэкапы
+ 
+<w:tblPr><w:tblStyle w:val="a4"/><w:tblW w:w="0" w:type="auto"/><w:tblLook w:val="04A0" w:firstRow="1" w:lastRow="0" w:firstColumn="1" w:lastColumn="0" w:noHBand="0" w:noVBand="1"/></w:tblPr><w:tblGrid><w:gridCol w:w="4150"/><w:gridCol w:w="4151"/></w:tblGrid><w:tr w:rsidR="002C5F8C" w:rsidRPr="00EA3196" w14:paraId="2350D340" w14:textId="77777777" w:rsidTr="00FD7ED5"><w:tc><w:tcPr><w:tcW w:w="4150" w:type="dxa"/></w:tcPr><w:p w14:paraId="31F1FD77" w14:textId="77777777" w:rsidR="002C5F8C" w:rsidRPr="00EA3196" w:rsidRDefault="002C5F8C" w:rsidP="00FD7ED5"><w:pPr><w:spacing w:after="0" w:line="360" w:lineRule="auto"/><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr></w:pPr><w:r w:rsidRPr="00EA3196"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:b/><w:bCs/></w:rPr><w:t>Параметр
+<w:tcPr><w:tcW w:w="4151" w:type="dxa"/></w:tcPr><w:p w14:paraId="2B958D0C" w14:textId="77777777" w:rsidR="002C5F8C" w:rsidRPr="00EA3196" w:rsidRDefault="002C5F8C" w:rsidP="00FD7ED5"><w:pPr><w:spacing w:after="0" w:line="360" w:lineRule="auto"/><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr></w:pPr><w:r w:rsidRPr="00EA3196"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:b/><w:bCs/></w:rPr><w:t>Значение
+<w:tc><w:tcPr><w:tcW w:w="4150" w:type="dxa"/></w:tcPr><w:p w14:paraId="6EC4FDD3" w14:textId="77777777" w:rsidR="002C5F8C" w:rsidRPr="00EA3196" w:rsidRDefault="002C5F8C" w:rsidP="00FD7ED5"><w:pPr><w:spacing w:after="0" w:line="360" w:lineRule="auto"/><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr></w:pPr><w:proofErr w:type="spellStart"/><w:r w:rsidRPr="00EA3196"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr><w:t>Автосоздание
+ 
+backup
+<w:tcPr><w:tcW w:w="4151" w:type="dxa"/></w:tcPr><w:p w14:paraId="164A795C" w14:textId="4B5C39B9" w:rsidR="002C5F8C" w:rsidRPr="00035364" w:rsidRDefault="002C5F8C" w:rsidP="00FD7ED5"><w:pPr><w:spacing w:after="0" w:line="360" w:lineRule="auto"/><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr></w:pPr><w:r w:rsidRPr="00EA3196"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr><w:t xml:space="preserve">При каждом 
+прекращении работы программы.
+<w:tc><w:tcPr><w:tcW w:w="4150" w:type="dxa"/></w:tcPr><w:p w14:paraId="25D34CEB" w14:textId="77777777" w:rsidR="002C5F8C" w:rsidRPr="00EA3196" w:rsidRDefault="002C5F8C" w:rsidP="00FD7ED5"><w:pPr><w:spacing w:after="0" w:line="360" w:lineRule="auto"/><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr></w:pPr><w:r w:rsidRPr="00EA3196"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr><w:t xml:space="preserve">Имя 
+backup
+ файла
+<w:tcPr><w:tcW w:w="4151" w:type="dxa"/></w:tcPr><w:p w14:paraId="363A9097" w14:textId="77777777" w:rsidR="002C5F8C" w:rsidRPr="00EA3196" w:rsidRDefault="002C5F8C" w:rsidP="00FD7ED5"><w:pPr><w:spacing w:after="0" w:line="360" w:lineRule="auto"/><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr></w:pPr><w:r w:rsidRPr="00EA3196"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr><w:t>sports_database_backup.dat
+<w:tc><w:tcPr><w:tcW w:w="4150" w:type="dxa"/></w:tcPr><w:p w14:paraId="77FF6809" w14:textId="77777777" w:rsidR="002C5F8C" w:rsidRPr="00EA3196" w:rsidRDefault="002C5F8C" w:rsidP="00FD7ED5"><w:pPr><w:spacing w:after="0" w:line="360" w:lineRule="auto"/><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr></w:pPr><w:r w:rsidRPr="00EA3196"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr><w:t xml:space="preserve">Хранение 
+backup
+<w:tcPr><w:tcW w:w="4151" w:type="dxa"/></w:tcPr><w:p w14:paraId="1C472047" w14:textId="79A42751" w:rsidR="002C5F8C" w:rsidRPr="00035364" w:rsidRDefault="00035364" w:rsidP="00FD7ED5"><w:pPr><w:spacing w:after="0" w:line="360" w:lineRule="auto"/><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr><w:t>На другом информационном накопителе
+Ошибки и исключения
+Обработка ошибок
+<w:tblPr><w:tblStyle w:val="a4"/><w:tblW w:w="0" w:type="auto"/><w:tblLook w:val="04A0" w:firstRow="1" w:lastRow="0" w:firstColumn="1" w:lastColumn="0" w:noHBand="0" w:noVBand="1"/></w:tblPr><w:tblGrid><w:gridCol w:w="4150"/><w:gridCol w:w="4151"/></w:tblGrid><w:tr w:rsidR="002C5F8C" w:rsidRPr="00EA3196" w14:paraId="1FAA3C38" w14:textId="77777777" w:rsidTr="00FD7ED5"><w:tc><w:tcPr><w:tcW w:w="4150" w:type="dxa"/></w:tcPr><w:p w14:paraId="3FBF723C" w14:textId="77777777" w:rsidR="002C5F8C" w:rsidRPr="00EA3196" w:rsidRDefault="002C5F8C" w:rsidP="00FD7ED5"><w:pPr><w:spacing w:after="0" w:line="360" w:lineRule="auto"/><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr></w:pPr><w:r w:rsidRPr="00EA3196"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:b/><w:bCs/></w:rPr><w:t>Ситуация
+<w:tcPr><w:tcW w:w="4151" w:type="dxa"/></w:tcPr><w:p w14:paraId="2E8E2EE8" w14:textId="77777777" w:rsidR="002C5F8C" w:rsidRPr="00EA3196" w:rsidRDefault="002C5F8C" w:rsidP="00FD7ED5"><w:pPr><w:spacing w:after="0" w:line="360" w:lineRule="auto"/><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr></w:pPr><w:r w:rsidRPr="00EA3196"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:b/><w:bCs/></w:rPr><w:t>Реакция системы
+<w:tc><w:tcPr><w:tcW w:w="4150" w:type="dxa"/></w:tcPr><w:p w14:paraId="60D50430" w14:textId="77777777" w:rsidR="002C5F8C" w:rsidRPr="00EA3196" w:rsidRDefault="002C5F8C" w:rsidP="00FD7ED5"><w:pPr><w:spacing w:after="0" w:line="360" w:lineRule="auto"/><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr></w:pPr><w:r w:rsidRPr="00EA3196"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr><w:t>Файл БД не найден
+<w:tcPr><w:tcW w:w="4151" w:type="dxa"/></w:tcPr><w:p w14:paraId="670E8917" w14:textId="3752A4D5" w:rsidR="002C5F8C" w:rsidRPr="00EA3196" w:rsidRDefault="00035364" w:rsidP="00FD7ED5"><w:pPr><w:spacing w:after="0" w:line="360" w:lineRule="auto"/><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr><w:t xml:space="preserve">Обращение к резервному файлу 
+backup
+ БД
+<w:tc><w:tcPr><w:tcW w:w="4150" w:type="dxa"/></w:tcPr><w:p w14:paraId="3B2F164C" w14:textId="77777777" w:rsidR="002C5F8C" w:rsidRPr="00EA3196" w:rsidRDefault="002C5F8C" w:rsidP="00FD7ED5"><w:pPr><w:spacing w:after="0" w:line="360" w:lineRule="auto"/><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr></w:pPr><w:r w:rsidRPr="00EA3196"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr><w:t>Ошибка чтения файла
+<w:tcPr><w:tcW w:w="4151" w:type="dxa"/></w:tcPr><w:p w14:paraId="18773A8D" w14:textId="77777777" w:rsidR="002C5F8C" w:rsidRPr="00EA3196" w:rsidRDefault="002C5F8C" w:rsidP="00FD7ED5"><w:pPr><w:spacing w:after="0" w:line="360" w:lineRule="auto"/><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr></w:pPr><w:r w:rsidRPr="00EA3196"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr><w:t xml:space="preserve">Вывод сообщения, предложение восстановить из 
+backup
+<w:tc><w:tcPr><w:tcW w:w="4150" w:type="dxa"/></w:tcPr><w:p w14:paraId="49C55B18" w14:textId="77777777" w:rsidR="002C5F8C" w:rsidRPr="00EA3196" w:rsidRDefault="002C5F8C" w:rsidP="00FD7ED5"><w:pPr><w:spacing w:after="0" w:line="360" w:lineRule="auto"/><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr></w:pPr><w:r w:rsidRPr="00EA3196"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr><w:t>Изображение не найдено
+<w:tcPr><w:tcW w:w="4151" w:type="dxa"/></w:tcPr><w:p w14:paraId="334480C6" w14:textId="43CEFA5D" w:rsidR="002C5F8C" w:rsidRPr="00EA3196" w:rsidRDefault="002C5F8C" w:rsidP="00FD7ED5"><w:pPr><w:spacing w:after="0" w:line="360" w:lineRule="auto"/><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:lang w:val="en-US"/></w:rPr></w:pPr><w:r w:rsidRPr="00EA3196"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr><w:t xml:space="preserve">Отображение 
+“
+заглушки
+”
+Развертывание (
+Deployment
+)
+Инструкция по запуску
+<w:tblPr><w:tblStyle w:val="a4"/><w:tblW w:w="0" w:type="auto"/><w:tblLook w:val="04A0" w:firstRow="1" w:lastRow="0" w:firstColumn="1" w:lastColumn="0" w:noHBand="0" w:noVBand="1"/></w:tblPr><w:tblGrid><w:gridCol w:w="4150"/><w:gridCol w:w="4151"/></w:tblGrid><w:tr w:rsidR="002C5F8C" w:rsidRPr="00EA3196" w14:paraId="25ED9CFC" w14:textId="77777777" w:rsidTr="00FD7ED5"><w:tc><w:tcPr><w:tcW w:w="4150" w:type="dxa"/></w:tcPr><w:p w14:paraId="4A0AE192" w14:textId="77777777" w:rsidR="002C5F8C" w:rsidRPr="00EA3196" w:rsidRDefault="002C5F8C" w:rsidP="00FD7ED5"><w:pPr><w:spacing w:after="0" w:line="360" w:lineRule="auto"/><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:b/><w:bCs/></w:rPr></w:pPr><w:r w:rsidRPr="00EA3196"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:b/><w:bCs/></w:rPr><w:t>Шаг
+<w:tcPr><w:tcW w:w="4151" w:type="dxa"/></w:tcPr><w:p w14:paraId="1E7C69A5" w14:textId="77777777" w:rsidR="002C5F8C" w:rsidRPr="00EA3196" w:rsidRDefault="002C5F8C" w:rsidP="00FD7ED5"><w:pPr><w:spacing w:after="0" w:line="360" w:lineRule="auto"/><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:b/><w:bCs/></w:rPr></w:pPr><w:r w:rsidRPr="00EA3196"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:b/><w:bCs/></w:rPr><w:t>Действие
+<w:tc><w:tcPr><w:tcW w:w="4150" w:type="dxa"/></w:tcPr><w:p w14:paraId="5C90C61D" w14:textId="109E6189" w:rsidR="002C5F8C" w:rsidRPr="00EA3196" w:rsidRDefault="002C5F8C" w:rsidP="00FD7ED5"><w:pPr><w:spacing w:after="0" w:line="360" w:lineRule="auto"/><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr></w:pPr><w:r w:rsidRPr="00EA3196"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr><w:t>1
+<w:tcPr><w:tcW w:w="4151" w:type="dxa"/></w:tcPr><w:p w14:paraId="390D27B8" w14:textId="29934256" w:rsidR="002C5F8C" w:rsidRPr="00EA3196" w:rsidRDefault="002C5F8C" w:rsidP="00FD7ED5"><w:pPr><w:spacing w:after="0" w:line="360" w:lineRule="auto"/><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr></w:pPr><w:r w:rsidRPr="00EA3196"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr><w:t>Скопировать гит репозиторий
+<w:tc><w:tcPr><w:tcW w:w="4150" w:type="dxa"/></w:tcPr><w:p w14:paraId="2077F061" w14:textId="178E7DAE" w:rsidR="002C5F8C" w:rsidRPr="00EA3196" w:rsidRDefault="002C5F8C" w:rsidP="00FD7ED5"><w:pPr><w:spacing w:after="0" w:line="360" w:lineRule="auto"/><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr></w:pPr><w:r w:rsidRPr="00EA3196"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr><w:t>2
+<w:tcPr><w:tcW w:w="4151" w:type="dxa"/></w:tcPr><w:p w14:paraId="344D7FD2" w14:textId="6A02D25F" w:rsidR="002C5F8C" w:rsidRPr="00EA3196" w:rsidRDefault="002C5F8C" w:rsidP="00FD7ED5"><w:pPr><w:spacing w:after="0" w:line="360" w:lineRule="auto"/><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr></w:pPr><w:r w:rsidRPr="00EA3196"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr><w:t>Скачать зависимости
+<w:tc><w:tcPr><w:tcW w:w="4150" w:type="dxa"/></w:tcPr><w:p w14:paraId="27AC324F" w14:textId="7A4AB949" w:rsidR="002C5F8C" w:rsidRPr="00EA3196" w:rsidRDefault="002C5F8C" w:rsidP="00FD7ED5"><w:pPr><w:spacing w:after="0" w:line="360" w:lineRule="auto"/><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr></w:pPr><w:r w:rsidRPr="00EA3196"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr><w:t>3
+<w:tcPr><w:tcW w:w="4151" w:type="dxa"/></w:tcPr><w:p w14:paraId="1412D479" w14:textId="77777777" w:rsidR="002C5F8C" w:rsidRPr="00EA3196" w:rsidRDefault="002C5F8C" w:rsidP="00FD7ED5"><w:pPr><w:spacing w:after="0" w:line="360" w:lineRule="auto"/><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr></w:pPr><w:r w:rsidRPr="00EA3196"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr><w:t>Скомпилировать проект
+<w:tc><w:tcPr><w:tcW w:w="4150" w:type="dxa"/></w:tcPr><w:p w14:paraId="2189EAB5" w14:textId="77777777" w:rsidR="002C5F8C" w:rsidRPr="00EA3196" w:rsidRDefault="002C5F8C" w:rsidP="00FD7ED5"><w:pPr><w:spacing w:after="0" w:line="360" w:lineRule="auto"/><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr></w:pPr><w:r w:rsidRPr="00EA3196"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr><w:t>4
+<w:tcPr><w:tcW w:w="4151" w:type="dxa"/></w:tcPr><w:p w14:paraId="42FDEE1B" w14:textId="77777777" w:rsidR="002C5F8C" w:rsidRPr="00EA3196" w:rsidRDefault="002C5F8C" w:rsidP="00FD7ED5"><w:pPr><w:spacing w:after="0" w:line="360" w:lineRule="auto"/><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr></w:pPr><w:r w:rsidRPr="00EA3196"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr><w:t>Запустить приложение
+Окружение
+<w:tblPr><w:tblStyle w:val="a4"/><w:tblW w:w="0" w:type="auto"/><w:tblLook w:val="04A0" w:firstRow="1" w:lastRow="0" w:firstColumn="1" w:lastColumn="0" w:noHBand="0" w:noVBand="1"/></w:tblPr><w:tblGrid><w:gridCol w:w="4150"/><w:gridCol w:w="4151"/></w:tblGrid><w:tr w:rsidR="002C5F8C" w:rsidRPr="00EA3196" w14:paraId="294D78D1" w14:textId="77777777" w:rsidTr="00FD7ED5"><w:tc><w:tcPr><w:tcW w:w="4150" w:type="dxa"/></w:tcPr><w:p w14:paraId="3BCE1BB5" w14:textId="77777777" w:rsidR="002C5F8C" w:rsidRPr="00EA3196" w:rsidRDefault="002C5F8C" w:rsidP="00FD7ED5"><w:pPr><w:spacing w:after="0" w:line="360" w:lineRule="auto"/><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr></w:pPr><w:r w:rsidRPr="00EA3196"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:b/><w:bCs/></w:rPr><w:t>Параметр
+<w:tcPr><w:tcW w:w="4151" w:type="dxa"/></w:tcPr><w:p w14:paraId="6D09BABB" w14:textId="77777777" w:rsidR="002C5F8C" w:rsidRPr="00EA3196" w:rsidRDefault="002C5F8C" w:rsidP="00FD7ED5"><w:pPr><w:spacing w:after="0" w:line="360" w:lineRule="auto"/><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr></w:pPr><w:r w:rsidRPr="00EA3196"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:b/><w:bCs/></w:rPr><w:t>Требование
+<w:tc><w:tcPr><w:tcW w:w="4150" w:type="dxa"/></w:tcPr><w:p w14:paraId="1C20BE86" w14:textId="77777777" w:rsidR="002C5F8C" w:rsidRPr="00EA3196" w:rsidRDefault="002C5F8C" w:rsidP="00FD7ED5"><w:pPr><w:spacing w:after="0" w:line="360" w:lineRule="auto"/><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr></w:pPr><w:r w:rsidRPr="00EA3196"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr><w:t>ОС
+<w:tcPr><w:tcW w:w="4151" w:type="dxa"/></w:tcPr><w:p w14:paraId="2F39D0EE" w14:textId="3680A083" w:rsidR="002C5F8C" w:rsidRPr="00EA3196" w:rsidRDefault="002C5F8C" w:rsidP="00FD7ED5"><w:pPr><w:spacing w:after="0" w:line="360" w:lineRule="auto"/><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:lang w:val="en-US"/></w:rPr></w:pPr><w:r w:rsidRPr="00EA3196"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:lang w:val="en-US"/></w:rPr><w:t xml:space="preserve">Windows + 
+wsl
+ 
+/
+ 
+Linux 
+<w:tc><w:tcPr><w:tcW w:w="4150" w:type="dxa"/></w:tcPr><w:p w14:paraId="5EF2CBFD" w14:textId="77777777" w:rsidR="002C5F8C" w:rsidRPr="00EA3196" w:rsidRDefault="002C5F8C" w:rsidP="00FD7ED5"><w:pPr><w:spacing w:after="0" w:line="360" w:lineRule="auto"/><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr></w:pPr><w:r w:rsidRPr="00EA3196"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr><w:t>Зависимости
+<w:tcPr><w:tcW w:w="4151" w:type="dxa"/></w:tcPr><w:p w14:paraId="23889C01" w14:textId="77777777" w:rsidR="002C5F8C" w:rsidRPr="00EA3196" w:rsidRDefault="002C5F8C" w:rsidP="00FD7ED5"><w:pPr><w:spacing w:after="0" w:line="360" w:lineRule="auto"/><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr></w:pPr><w:r w:rsidRPr="00EA3196"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr><w:t>Библиотеки GUI фреймворка
+Тестирование
+Типы тестов
+<w:tblPr><w:tblStyle w:val="a4"/><w:tblW w:w="0" w:type="auto"/><w:tblLook w:val="04A0" w:firstRow="1" w:lastRow="0" w:firstColumn="1" w:lastColumn="0" w:noHBand="0" w:noVBand="1"/></w:tblPr><w:tblGrid><w:gridCol w:w="2767"/><w:gridCol w:w="2767"/><w:gridCol w:w="2767"/></w:tblGrid><w:tr w:rsidR="00C207E9" w:rsidRPr="00EA3196" w14:paraId="1A01410E" w14:textId="77777777" w:rsidTr="00FD7ED5"><w:tc><w:tcPr><w:tcW w:w="2767" w:type="dxa"/></w:tcPr><w:p w14:paraId="628C7226" w14:textId="77777777" w:rsidR="00C207E9" w:rsidRPr="00EA3196" w:rsidRDefault="00C207E9" w:rsidP="00FD7ED5"><w:pPr><w:spacing w:after="0" w:line="360" w:lineRule="auto"/><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr></w:pPr><w:r w:rsidRPr="00EA3196"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:b/><w:bCs/></w:rPr><w:t>Тип тестов
+<w:tcPr><w:tcW w:w="2767" w:type="dxa"/></w:tcPr><w:p w14:paraId="4103FD70" w14:textId="77777777" w:rsidR="00C207E9" w:rsidRPr="00EA3196" w:rsidRDefault="00C207E9" w:rsidP="00FD7ED5"><w:pPr><w:spacing w:after="0" w:line="360" w:lineRule="auto"/><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr></w:pPr><w:r w:rsidRPr="00EA3196"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:b/><w:bCs/></w:rPr><w:t>Описание
+<w:tcPr><w:tcW w:w="2767" w:type="dxa"/></w:tcPr><w:p w14:paraId="511E7F2A" w14:textId="77777777" w:rsidR="00C207E9" w:rsidRPr="00EA3196" w:rsidRDefault="00C207E9" w:rsidP="00FD7ED5"><w:pPr><w:spacing w:after="0" w:line="360" w:lineRule="auto"/><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr></w:pPr><w:r w:rsidRPr="00EA3196"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:b/><w:bCs/></w:rPr><w:t>Статус
+<w:tc><w:tcPr><w:tcW w:w="2767" w:type="dxa"/></w:tcPr><w:p w14:paraId="3D2984E9" w14:textId="77777777" w:rsidR="00C207E9" w:rsidRPr="00EA3196" w:rsidRDefault="00C207E9" w:rsidP="00FD7ED5"><w:pPr><w:spacing w:after="0" w:line="360" w:lineRule="auto"/><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr></w:pPr><w:r w:rsidRPr="00EA3196"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr><w:t>Юнит-тесты
+<w:tcPr><w:tcW w:w="2767" w:type="dxa"/></w:tcPr><w:p w14:paraId="7CDCBBC7" w14:textId="77777777" w:rsidR="00C207E9" w:rsidRPr="00EA3196" w:rsidRDefault="00C207E9" w:rsidP="00FD7ED5"><w:pPr><w:spacing w:after="0" w:line="360" w:lineRule="auto"/><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr></w:pPr><w:r w:rsidRPr="00EA3196"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr><w:t>Тестирование алгоритмов сортировки, поиска, OBST
+<w:tcPr><w:tcW w:w="2767" w:type="dxa"/></w:tcPr><w:p w14:paraId="3B1CB907" w14:textId="77777777" w:rsidR="00C207E9" w:rsidRPr="00EA3196" w:rsidRDefault="00C207E9" w:rsidP="00FD7ED5"><w:pPr><w:spacing w:after="0" w:line="360" w:lineRule="auto"/><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr></w:pPr><w:r w:rsidRPr="00EA3196"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr><w:t>Обязательно
+<w:tc><w:tcPr><w:tcW w:w="2767" w:type="dxa"/></w:tcPr><w:p w14:paraId="25F53EB0" w14:textId="77777777" w:rsidR="00C207E9" w:rsidRPr="00EA3196" w:rsidRDefault="00C207E9" w:rsidP="00FD7ED5"><w:pPr><w:spacing w:after="0" w:line="360" w:lineRule="auto"/><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr></w:pPr><w:r w:rsidRPr="00EA3196"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr><w:t>Интеграционные тесты
+<w:tcPr><w:tcW w:w="2767" w:type="dxa"/></w:tcPr><w:p w14:paraId="4C72A7F3" w14:textId="77777777" w:rsidR="00C207E9" w:rsidRPr="00EA3196" w:rsidRDefault="00C207E9" w:rsidP="00FD7ED5"><w:pPr><w:spacing w:after="0" w:line="360" w:lineRule="auto"/><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr></w:pPr><w:r w:rsidRPr="00EA3196"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr><w:t>Чтение/запись файла, пагинация, изображения
+<w:tcPr><w:tcW w:w="2767" w:type="dxa"/></w:tcPr><w:p w14:paraId="65A1F017" w14:textId="77777777" w:rsidR="00C207E9" w:rsidRPr="00EA3196" w:rsidRDefault="00C207E9" w:rsidP="00FD7ED5"><w:pPr><w:spacing w:after="0" w:line="360" w:lineRule="auto"/><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr></w:pPr><w:r w:rsidRPr="00EA3196"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr><w:t>Обязательно
+<w:tc><w:tcPr><w:tcW w:w="2767" w:type="dxa"/></w:tcPr><w:p w14:paraId="0D8F8430" w14:textId="77777777" w:rsidR="00C207E9" w:rsidRPr="00EA3196" w:rsidRDefault="00C207E9" w:rsidP="00FD7ED5"><w:pPr><w:spacing w:after="0" w:line="360" w:lineRule="auto"/><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr></w:pPr><w:r w:rsidRPr="00EA3196"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr><w:lastRenderedPageBreak/><w:t>UI тесты
+<w:tcPr><w:tcW w:w="2767" w:type="dxa"/></w:tcPr><w:p w14:paraId="55CED4DE" w14:textId="77777777" w:rsidR="00C207E9" w:rsidRPr="00EA3196" w:rsidRDefault="00C207E9" w:rsidP="00FD7ED5"><w:pPr><w:spacing w:after="0" w:line="360" w:lineRule="auto"/><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr></w:pPr><w:r w:rsidRPr="00EA3196"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr><w:t>Проверка интерфейса, кнопок, навигации
+<w:tcPr><w:tcW w:w="2767" w:type="dxa"/></w:tcPr><w:p w14:paraId="7AC921A9" w14:textId="77777777" w:rsidR="00C207E9" w:rsidRPr="00EA3196" w:rsidRDefault="00C207E9" w:rsidP="00FD7ED5"><w:pPr><w:spacing w:after="0" w:line="360" w:lineRule="auto"/><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr></w:pPr><w:r w:rsidRPr="00EA3196"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr><w:t>Обязательно
+Критерии приёмки
+:
+Все 20-40 записей вводятся и сохраняются
+Пагинация работает корректно (10 записей на странице)
+Сортировка работает по всем полям
+Двоичный поиск находит записи
+Оптимальное дерево поиска строится и отображается
+Изображения отображаются корректно
+Обработка ошибок реализована
+Имеется документация и актуальная версия на удалённом репозитории.
+Open 
+Questions
+ (Вопросы)
+<w:tblPr><w:tblStyle w:val="a4"/><w:tblW w:w="8994" w:type="dxa"/><w:tblLook w:val="04A0" w:firstRow="1" w:lastRow="0" w:firstColumn="1" w:lastColumn="0" w:noHBand="0" w:noVBand="1"/></w:tblPr><w:tblGrid><w:gridCol w:w="1739"/><w:gridCol w:w="4521"/><w:gridCol w:w="2734"/></w:tblGrid><w:tr w:rsidR="00C207E9" w:rsidRPr="00EA3196" w14:paraId="126C7341" w14:textId="77777777" w:rsidTr="00C207E9"><w:trPr><w:trHeight w:val="245"/></w:trPr><w:tc><w:tcPr><w:tcW w:w="1739" w:type="dxa"/></w:tcPr><w:p w14:paraId="77F530F5" w14:textId="77777777" w:rsidR="00C207E9" w:rsidRPr="00EA3196" w:rsidRDefault="00C207E9" w:rsidP="00FD7ED5"><w:pPr><w:spacing w:after="0" w:line="360" w:lineRule="auto"/><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr></w:pPr><w:r w:rsidRPr="00EA3196"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:b/><w:bCs/></w:rPr><w:t>№
+<w:tcPr><w:tcW w:w="4521" w:type="dxa"/></w:tcPr><w:p w14:paraId="14641274" w14:textId="77777777" w:rsidR="00C207E9" w:rsidRPr="00EA3196" w:rsidRDefault="00C207E9" w:rsidP="00FD7ED5"><w:pPr><w:spacing w:after="0" w:line="360" w:lineRule="auto"/><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr></w:pPr><w:r w:rsidRPr="00EA3196"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:b/><w:bCs/></w:rPr><w:t>Вопрос
+<w:tcPr><w:tcW w:w="2734" w:type="dxa"/></w:tcPr><w:p w14:paraId="5E24B1E6" w14:textId="77777777" w:rsidR="00C207E9" w:rsidRPr="00EA3196" w:rsidRDefault="00C207E9" w:rsidP="00FD7ED5"><w:pPr><w:spacing w:after="0" w:line="360" w:lineRule="auto"/><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr></w:pPr><w:r w:rsidRPr="00EA3196"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:b/><w:bCs/></w:rPr><w:t>Статус
+<w:trPr><w:trHeight w:val="755"/></w:trPr><w:tc><w:tcPr><w:tcW w:w="1739" w:type="dxa"/></w:tcPr><w:p w14:paraId="62397D76" w14:textId="07E1996F" w:rsidR="00C207E9" w:rsidRPr="00EA3196" w:rsidRDefault="00C207E9" w:rsidP="00FD7ED5"><w:pPr><w:spacing w:after="0" w:line="360" w:lineRule="auto"/><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr></w:pPr><w:r w:rsidRPr="00EA3196"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr><w:t>1
+<w:tcPr><w:tcW w:w="4521" w:type="dxa"/></w:tcPr><w:p w14:paraId="528EF8D3" w14:textId="77777777" w:rsidR="00C207E9" w:rsidRPr="00EA3196" w:rsidRDefault="00C207E9" w:rsidP="00FD7ED5"><w:pPr><w:spacing w:after="0" w:line="360" w:lineRule="auto"/><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:sz w:val="28"/><w:szCs w:val="28"/></w:rPr></w:pPr><w:r w:rsidRPr="00EA3196"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:sz w:val="28"/><w:szCs w:val="28"/></w:rPr><w:t>Где брать изображения для видов спорта?
+<w:tcPr><w:tcW w:w="2734" w:type="dxa"/></w:tcPr><w:p w14:paraId="51EC9224" w14:textId="1C1B4889" w:rsidR="00C207E9" w:rsidRPr="00DE334D" w:rsidRDefault="00C207E9" w:rsidP="00FD7ED5"><w:pPr><w:spacing w:after="0" w:line="360" w:lineRule="auto"/><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:color w:val="000000" w:themeColor="text1"/><w:sz w:val="28"/><w:szCs w:val="28"/></w:rPr></w:pPr><w:r w:rsidRPr="00DE334D"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:color w:val="000000" w:themeColor="text1"/><w:sz w:val="28"/><w:szCs w:val="28"/></w:rPr><w:t>В обсуждении
+<w:trPr><w:trHeight w:val="763"/></w:trPr><w:tc><w:tcPr><w:tcW w:w="1739" w:type="dxa"/></w:tcPr><w:p w14:paraId="0917629A" w14:textId="35312484" w:rsidR="00C207E9" w:rsidRPr="00EA3196" w:rsidRDefault="00C207E9" w:rsidP="00FD7ED5"><w:pPr><w:spacing w:after="0" w:line="360" w:lineRule="auto"/><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr></w:pPr><w:r w:rsidRPr="00EA3196"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr><w:t>2
+<w:tcPr><w:tcW w:w="4521" w:type="dxa"/></w:tcPr><w:p w14:paraId="612E598D" w14:textId="77777777" w:rsidR="00C207E9" w:rsidRPr="00EA3196" w:rsidRDefault="00C207E9" w:rsidP="00FD7ED5"><w:pPr><w:spacing w:after="0" w:line="360" w:lineRule="auto"/><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:sz w:val="28"/><w:szCs w:val="28"/></w:rPr></w:pPr><w:r w:rsidRPr="00EA3196"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:sz w:val="28"/><w:szCs w:val="28"/></w:rPr><w:t>Как визуализировать дерево оптимального поиска?
+<w:tcPr><w:tcW w:w="2734" w:type="dxa"/></w:tcPr><w:p w14:paraId="4A2E6B7C" w14:textId="77777777" w:rsidR="00C207E9" w:rsidRPr="00DE334D" w:rsidRDefault="00C207E9" w:rsidP="00FD7ED5"><w:pPr><w:spacing w:after="0" w:line="360" w:lineRule="auto"/><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:color w:val="000000" w:themeColor="text1"/><w:sz w:val="28"/><w:szCs w:val="28"/></w:rPr></w:pPr><w:r w:rsidRPr="00DE334D"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:color w:val="000000" w:themeColor="text1"/><w:sz w:val="28"/><w:szCs w:val="28"/></w:rPr><w:t>В обсуждении
+<w:trPr><w:trHeight w:val="755"/></w:trPr><w:tc><w:tcPr><w:tcW w:w="1739" w:type="dxa"/></w:tcPr><w:p w14:paraId="6BEBF633" w14:textId="22129C7A" w:rsidR="00C207E9" w:rsidRPr="00EA3196" w:rsidRDefault="00C207E9" w:rsidP="00FD7ED5"><w:pPr><w:spacing w:after="0" w:line="360" w:lineRule="auto"/><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr></w:pPr><w:r w:rsidRPr="00EA3196"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr><w:t>3
+<w:tcPr><w:tcW w:w="4521" w:type="dxa"/></w:tcPr><w:p w14:paraId="5650E4C2" w14:textId="77777777" w:rsidR="00C207E9" w:rsidRPr="00EA3196" w:rsidRDefault="00C207E9" w:rsidP="00FD7ED5"><w:pPr><w:spacing w:after="0" w:line="360" w:lineRule="auto"/><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:sz w:val="28"/><w:szCs w:val="28"/></w:rPr></w:pPr><w:r w:rsidRPr="00EA3196"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:sz w:val="28"/><w:szCs w:val="28"/></w:rPr><w:t>Точный формат хранения данных (бинарный/текстовый)?
+<w:tcPr><w:tcW w:w="2734" w:type="dxa"/></w:tcPr><w:p w14:paraId="7864C568" w14:textId="4C2BAE59" w:rsidR="00C207E9" w:rsidRPr="00DE334D" w:rsidRDefault="00C207E9" w:rsidP="00FD7ED5"><w:pPr><w:spacing w:after="0" w:line="360" w:lineRule="auto"/><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:color w:val="000000" w:themeColor="text1"/><w:sz w:val="28"/><w:szCs w:val="28"/></w:rPr></w:pPr><w:r w:rsidRPr="00DE334D"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:color w:val="000000" w:themeColor="text1"/><w:sz w:val="28"/><w:szCs w:val="28"/></w:rPr><w:t>В обсуждении
+<w:trPr><w:trHeight w:val="755"/></w:trPr><w:tc><w:tcPr><w:tcW w:w="1739" w:type="dxa"/></w:tcPr><w:p w14:paraId="157252B7" w14:textId="704ED097" w:rsidR="00C207E9" w:rsidRPr="00EA3196" w:rsidRDefault="00C207E9" w:rsidP="00FD7ED5"><w:pPr><w:spacing w:after="0" w:line="360" w:lineRule="auto"/><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr></w:pPr><w:r w:rsidRPr="00EA3196"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr><w:t>4
+<w:tcPr><w:tcW w:w="4521" w:type="dxa"/></w:tcPr><w:p w14:paraId="5DDBF0B3" w14:textId="77777777" w:rsidR="00C207E9" w:rsidRPr="00EA3196" w:rsidRDefault="00C207E9" w:rsidP="00FD7ED5"><w:pPr><w:spacing w:after="0" w:line="360" w:lineRule="auto"/><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:sz w:val="28"/><w:szCs w:val="28"/></w:rPr></w:pPr><w:r w:rsidRPr="00EA3196"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:sz w:val="28"/><w:szCs w:val="28"/></w:rPr><w:t>Какой именно алгоритм сортировки использовать?
+<w:tcPr><w:tcW w:w="2734" w:type="dxa"/></w:tcPr><w:p w14:paraId="59ADE209" w14:textId="676E80D9" w:rsidR="00C207E9" w:rsidRPr="00DE334D" w:rsidRDefault="00C207E9" w:rsidP="00FD7ED5"><w:pPr><w:spacing w:after="0" w:line="360" w:lineRule="auto"/><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:color w:val="000000" w:themeColor="text1"/><w:sz w:val="28"/><w:szCs w:val="28"/></w:rPr></w:pPr><w:r w:rsidRPr="00DE334D"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:color w:val="000000" w:themeColor="text1"/><w:sz w:val="28"/><w:szCs w:val="28"/></w:rPr><w:t>В обсуждении
+<w:trPr><w:trHeight w:val="755"/></w:trPr><w:tc><w:tcPr><w:tcW w:w="1739" w:type="dxa"/></w:tcPr><w:p w14:paraId="4FF04271" w14:textId="071821AA" w:rsidR="00C207E9" w:rsidRPr="00EA3196" w:rsidRDefault="00C207E9" w:rsidP="00FD7ED5"><w:pPr><w:spacing w:after="0" w:line="360" w:lineRule="auto"/><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr></w:pPr><w:r w:rsidRPr="00EA3196"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/></w:rPr><w:lastRenderedPageBreak/><w:t>5
+<w:tcPr><w:tcW w:w="4521" w:type="dxa"/></w:tcPr><w:p w14:paraId="4F31BBB2" w14:textId="43D02344" w:rsidR="00C207E9" w:rsidRPr="00EA3196" w:rsidRDefault="00C207E9" w:rsidP="00FD7ED5"><w:pPr><w:spacing w:after="0" w:line="360" w:lineRule="auto"/><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:sz w:val="28"/><w:szCs w:val="28"/></w:rPr></w:pPr><w:r w:rsidRPr="00EA3196"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:sz w:val="28"/><w:szCs w:val="28"/></w:rPr><w:t>Как именно будет выглядеть графическая часть, отвечающая за взаимодействие с пользователем
+<w:tcPr><w:tcW w:w="2734" w:type="dxa"/></w:tcPr><w:p w14:paraId="41FA82EA" w14:textId="31B3545D" w:rsidR="00C207E9" w:rsidRPr="00DE334D" w:rsidRDefault="00C207E9" w:rsidP="00FD7ED5"><w:pPr><w:spacing w:after="0" w:line="360" w:lineRule="auto"/><w:ind w:left="0" w:firstLine="0"/><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:color w:val="000000" w:themeColor="text1"/><w:sz w:val="28"/><w:szCs w:val="28"/></w:rPr></w:pPr><w:r w:rsidRPr="00DE334D"><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:color w:val="000000" w:themeColor="text1"/><w:sz w:val="28"/><w:szCs w:val="28"/></w:rPr><w:t>В процессе ра
+з
+работки

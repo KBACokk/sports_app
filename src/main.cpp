@@ -32,12 +32,14 @@
 #include <algorithm>
 #include <chrono>
 #include <thread>
+#include <optional>
 
 #if defined(_WIN32)
 #  ifndef NOMINMAX
 #    define NOMINMAX
 #  endif
 #  include <windows.h>
+#  include <commdlg.h>
 #elif defined(__linux__)
 #  include <unistd.h>
 #endif
@@ -49,6 +51,8 @@ static void deleteRecord(UiState& ui, int id);
 static void drawTreeTextInOrder(const nlohmann::json& node, int depth = 0);
 static std::string sortFieldToBackendString(SortField field);
 static bool fetchCategories(UiState& ui);
+static void collectTreeInOrder(const nlohmann::json& node, std::vector<nlohmann::json>& out);
+static std::optional<std::string> pickImageFile(std::string& statusMessage);
 
 // ========== ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ==========
 
@@ -175,6 +179,7 @@ struct UiState {
     // Поиск и сортировка
     char searchName[256] = "";
     char sortField[64] = "name";
+    bool sortAscending = true;
     
     // Форма добавления
     char sportId[32] = "";
@@ -186,6 +191,9 @@ struct UiState {
     char imagePath[512] = "";
     char contraindications[512] = "";
     std::string selectedImageSourcePath;
+    std::string imagePickMessage;
+    bool imagePickerOpen = false;
+    char imagePickerDir[512] = "C:/Users/Egor/Desktop/images";
     
     // Статусы
     std::string status;
@@ -228,6 +236,9 @@ static ImVec4 g_successColor = ImVec4(0.2f, 0.8f, 0.2f, 1.0f);
 static ImVec4 g_errorColor = ImVec4(0.9f, 0.2f, 0.2f, 1.0f);
 static ImVec4 g_warningColor = ImVec4(0.9f, 0.6f, 0.1f, 1.0f);
 static ImVec4 g_primaryColor = ImVec4(0.2f, 0.5f, 0.9f, 1.0f);
+static std::filesystem::path g_lastImageDirectory;
+static const std::filesystem::path g_externalImagesDir =
+    std::filesystem::path("C:/Users/Egor/Desktop/images");
 
 static const std::array<SortField, 8> g_treeFields = {
     SortField::Id, SortField::Name, SortField::Category,
@@ -361,17 +372,110 @@ static std::string resolveImagePath(const std::string& raw) {
     // Common project locations (helps when stored paths are just filenames).
     const std::filesystem::path filename = p.filename();
     const std::filesystem::path dataDir = std::filesystem::exists(cwd / "data") ? (cwd / "data") : std::filesystem::path{};
-    const std::array<std::filesystem::path, 4> candidates = {
+    const bool hasDirSeparators = raw.find('/') != std::string::npos || raw.find('\\') != std::string::npos;
+
+    auto toLowerAscii = [](std::string s) {
+        std::transform(s.begin(), s.end(), s.begin(),
+                       [](unsigned char ch) { return static_cast<char>(std::tolower(ch)); });
+        return s;
+    };
+
+    if (!hasDirSeparators && std::filesystem::exists(g_externalImagesDir) && std::filesystem::is_directory(g_externalImagesDir)) {
+        // Recursive case-insensitive search by filename in C:/Users/Egor/Desktop/images
+        const std::string targetName = toLowerAscii(filename.string());
+        const std::filesystem::path direct = g_externalImagesDir / filename;
+        if (std::filesystem::exists(direct)) return direct.string();
+        for (const auto& entry : std::filesystem::recursive_directory_iterator(g_externalImagesDir)) {
+            if (!entry.is_regular_file()) continue;
+            if (toLowerAscii(entry.path().filename().string()) == targetName) {
+                return entry.path().string();
+            }
+        }
+    }
+
+    const std::array<std::filesystem::path, 7> candidates = {
+        (!hasDirSeparators && std::filesystem::exists(g_externalImagesDir)) ? (g_externalImagesDir / filename) : std::filesystem::path{},
+        (!g_lastImageDirectory.empty() && !hasDirSeparators) ? (g_lastImageDirectory / filename) : std::filesystem::path{},
+        cwd / "images" / filename,
         cwd / "assets" / "images" / filename,
         dataDir.empty() ? std::filesystem::path{} : (dataDir / filename),
         dataDir.empty() ? std::filesystem::path{} : (dataDir / p),
-        cwd / p.filename()
+        cwd / filename
     };
     for (const auto& c : candidates) {
         if (!c.empty() && std::filesystem::exists(c)) return c.string();
     }
 
     return raw;
+}
+
+static std::string normalizeUserPath(std::string raw) {
+    // Trim spaces
+    while (!raw.empty() && std::isspace(static_cast<unsigned char>(raw.front()))) raw.erase(raw.begin());
+    while (!raw.empty() && std::isspace(static_cast<unsigned char>(raw.back()))) raw.pop_back();
+
+    // Remove wrapping quotes if user pasted "C:\...\file.png"
+    if (raw.size() >= 2) {
+        const char first = raw.front();
+        const char last = raw.back();
+        if ((first == '"' && last == '"') || (first == '\'' && last == '\'')) {
+            raw = raw.substr(1, raw.size() - 2);
+        }
+    }
+
+    // Unify separators for easier manual input.
+    std::replace(raw.begin(), raw.end(), '\\', '/');
+    return raw;
+}
+
+static std::optional<std::string> pickImageFile(std::string& statusMessage) {
+    statusMessage.clear();
+
+    // Try portable-file-dialogs first.
+    if (pfd::settings::available()) {
+        const std::string startDir = std::filesystem::current_path().string();
+        auto selection = pfd::open_file(
+            "Выбор изображения",
+            startDir,
+            {"Image Files", "*.png *.jpg *.jpeg *.bmp *.tga"}
+        ).result();
+        if (!selection.empty()) {
+            std::filesystem::path p(selection[0]);
+            if (p.has_parent_path()) g_lastImageDirectory = p.parent_path();
+            return selection[0];
+        }
+    }
+
+#if defined(_WIN32)
+    // Fallback to native WinAPI file picker.
+    wchar_t fileBuffer[MAX_PATH] = {0};
+    OPENFILENAMEW ofn;
+    ZeroMemory(&ofn, sizeof(ofn));
+    ofn.lStructSize = sizeof(ofn);
+    ofn.hwndOwner = nullptr;
+    ofn.lpstrFile = fileBuffer;
+    ofn.nMaxFile = MAX_PATH;
+    ofn.lpstrFilter = L"Image Files\0*.png;*.jpg;*.jpeg;*.bmp;*.tga\0All Files\0*.*\0";
+    ofn.nFilterIndex = 1;
+    ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_HIDEREADONLY;
+
+    if (GetOpenFileNameW(&ofn)) {
+        const std::filesystem::path p(fileBuffer);
+        if (p.has_parent_path()) g_lastImageDirectory = p.parent_path();
+        return p.string();
+    }
+
+    const DWORD err = CommDlgExtendedError();
+    if (err != 0) {
+        statusMessage = "Системный диалог выбора файла завершился с ошибкой";
+    } else {
+        statusMessage = "Файл не выбран";
+    }
+    return std::nullopt;
+#else
+    statusMessage = "Диалог выбора файла недоступен в текущем окружении";
+    return std::nullopt;
+#endif
 }
 
 static void drawStatusBar(const std::string& status, const std::string& error = "") {
@@ -421,6 +525,13 @@ static void drawTreeTextInOrder(const nlohmann::json& node, int depth) {
     ImGui::TextColored(treeColor, "%s", line.c_str());
 
     drawTreeTextInOrder(node["right"], depth + 1);
+}
+
+static void collectTreeInOrder(const nlohmann::json& node, std::vector<nlohmann::json>& out) {
+    if (node.is_null()) return;
+    collectTreeInOrder(node["left"], out);
+    out.push_back(node);
+    collectTreeInOrder(node["right"], out);
 }
 
 static void drawRecordCard(const nlohmann::json& rec, bool showDeleteButton, UiState* ui = nullptr) {
@@ -617,7 +728,8 @@ static bool fetchCategories(UiState& ui) {
 
 static void doSort(UiState& ui) {
     httplib::Client cli("127.0.0.1", 8080);
-    std::string url = "/api/sports/sort?field=" + std::string(ui.sortField);
+    std::string url = "/api/sports/sort?field=" + std::string(ui.sortField) +
+                      "&order=" + std::string(ui.sortAscending ? "asc" : "desc");
     
     auto res = cli.Post(url.c_str(), "", "application/json");
     
@@ -626,7 +738,7 @@ static void doSort(UiState& ui) {
         return;
     }
     
-    ui.status = "Сортировка выполнена";
+    ui.status = std::string("Сортировка выполнена (") + (ui.sortAscending ? "ASC" : "DESC") + ")";
     fetchPage(ui);
 }
 
@@ -672,30 +784,46 @@ static void doBinarySearch(UiState& ui) {
 }
 
 static void addRecord(UiState& ui) {
-    if (strlen(ui.sportId) == 0 || strlen(ui.name) == 0) {
-        ui.errorMessage = "Заполните ID и название";
+    if (strlen(ui.sportId) == 0 || strlen(ui.name) == 0 || strlen(ui.category) == 0) {
+        ui.errorMessage = "Заполните ID, название и категорию";
         return;
+    }
+    // Простейшая валидация ID: число > 0.
+    for (const char* p = ui.sportId; *p; ++p) {
+        if (!std::isdigit(static_cast<unsigned char>(*p))) {
+            ui.errorMessage = "ID должен содержать только цифры";
+            return;
+        }
     }
     
     httplib::Client cli("127.0.0.1", 8080);
     int id = std::atoi(ui.sportId);
-    std::string finalImagePath;
-    
-    if (!ui.selectedImageSourcePath.empty()) {
-        std::filesystem::create_directories("assets/images");
-        std::filesystem::path src(ui.selectedImageSourcePath);
-        std::string ext = src.extension().string();
-        if (ext.empty()) ext = ".png";
-        
-        std::string targetName = "sport_" + std::to_string(id) + ext;
-        std::filesystem::path dst = std::filesystem::path("assets/images") / targetName;
-        
-        std::filesystem::copy_file(src, dst, std::filesystem::copy_options::overwrite_existing);
-        finalImagePath = dst.string();
+    if (id <= 0) {
+        ui.errorMessage = "ID должен быть положительным числом";
+        return;
     }
-    
-    if (finalImagePath.empty() && strlen(ui.imagePath) > 0) {
-        finalImagePath = ui.imagePath;
+
+    // Такой же принцип, как у предзаполненных записей:
+    // сохраняем корректный image_path (предпочтительно имя файла), а отображение
+    // выполняется через resolveImagePath с поиском в стандартных директориях.
+    std::string finalImagePath;
+    const std::string typedPath = normalizeUserPath(std::string(ui.imagePath));
+    const std::filesystem::path selectedPath(ui.selectedImageSourcePath);
+
+    if (!ui.selectedImageSourcePath.empty() && std::filesystem::exists(selectedPath)) {
+        finalImagePath = selectedPath.filename().string(); // как у стартовых записей (например football.png)
+        if (selectedPath.has_parent_path()) g_lastImageDirectory = selectedPath.parent_path();
+    } else if (!typedPath.empty()) {
+        const std::string resolvedTyped = resolveImagePath(typedPath);
+        if (!resolvedTyped.empty() && std::filesystem::exists(std::filesystem::path(resolvedTyped))) {
+            finalImagePath = std::filesystem::path(resolvedTyped).filename().string();
+            const std::filesystem::path resolvedPath(resolvedTyped);
+            if (resolvedPath.has_parent_path()) g_lastImageDirectory = resolvedPath.parent_path();
+        } else {
+            // Если ввели только имя файла, сохраняем как есть — resolveImagePath попробует
+            // найти файл при показе (в т.ч. C:/Users/Egor/Desktop/images).
+            finalImagePath = typedPath;
+        }
     }
     
     nlohmann::json body = {
@@ -727,6 +855,7 @@ static void addRecord(UiState& ui) {
         memset(ui.contraindications, 0, sizeof(ui.contraindications));
         ui.olympic = false;
         ui.selectedImageSourcePath.clear();
+        ui.imagePickMessage.clear();
     } else {
         ui.errorMessage = "Ошибка добавления записи";
     }
@@ -1002,6 +1131,7 @@ int main() {
                 ImGui::EndCombo();
             }
 
+            ImGui::Checkbox("По порядку", &ui.sortAscending);
             if (ImGui::Button("Сортировать", ImVec2(-1, 0))) {
                 doSort(ui);
             }
@@ -1039,7 +1169,7 @@ int main() {
                         ImGui::BeginChild("##add_record_tab", ImVec2(0, 0), true);
                         ImGui::InputText("ID (число)*", ui.sportId, sizeof(ui.sportId));
                         ImGui::InputText("Название*", ui.name, sizeof(ui.name));
-                        ImGui::InputText("Категория", ui.category, sizeof(ui.category));
+                        ImGui::InputText("Категория*", ui.category, sizeof(ui.category));
                         ImGui::Checkbox("Олимпийский вид", &ui.olympic);
                         ImGui::InputTextMultiline("Описание", ui.description, sizeof(ui.description), ImVec2(-1, 120));
                         ImGui::InputText("Управляющий орган", ui.governingBody, sizeof(ui.governingBody));
@@ -1047,17 +1177,34 @@ int main() {
 
                         ImGui::Separator();
                         ImGui::Text("Изображение:");
-                        ImGui::InputText("Путь к файлу", ui.imagePath, sizeof(ui.imagePath));
+                        ImGui::InputTextWithHint(
+                            "Путь к файлу",
+                            "Пример: C:/Users/Egor/Pictures/football.png",
+                            ui.imagePath,
+                            sizeof(ui.imagePath)
+                        );
+                        ImGui::TextDisabled("Можно просто: football.png (поиск в C:/Users/Egor/Desktop/images).");
                         if (ImGui::Button("Выбрать файл")) {
-                            auto selection = pfd::open_file("Выбор изображения", ".", {"Image Files", "*.png *.jpg *.jpeg *.bmp *.tga"}).result();
-                            if (!selection.empty()) {
-                                ui.selectedImageSourcePath = selection[0];
-                                strncpy(ui.imagePath, selection[0].c_str(), sizeof(ui.imagePath));
-                            }
+                            ui.imagePickerOpen = true;
+                        }
+                        ImGui::SameLine();
+                        if (ImGui::Button("Очистить выбор")) {
+                            ui.selectedImageSourcePath.clear();
+                            ui.imagePath[0] = '\0';
+                            ui.imagePickMessage.clear();
                         }
 
                         if (!ui.selectedImageSourcePath.empty()) {
-                            ImGui::TextColored(g_successColor, "Выбран: %s", ui.selectedImageSourcePath.c_str());
+                            const bool okFile = std::filesystem::exists(std::filesystem::path(ui.selectedImageSourcePath));
+                            ImGui::TextColored(okFile ? g_successColor : g_warningColor,
+                                               "%s: %s",
+                                               okFile ? "Выбран" : "Проблема с файлом",
+                                               ui.selectedImageSourcePath.c_str());
+                            if (!ui.imagePickMessage.empty()) {
+                                ImGui::TextDisabled("%s", ui.imagePickMessage.c_str());
+                            }
+                            ImGui::Text("Предпросмотр:");
+                            drawImagePreview(resolveImagePath(ui.selectedImageSourcePath), 170.0f, 120.0f);
                         }
 
                         ImGui::Separator();
@@ -1122,9 +1269,40 @@ int main() {
                                     ImGui::Separator();
 
                                     if (!tab.tree.is_null() && !tab.isBuilding) {
-                                        ImGui::Text("Обход дерева (in-order):");
-                                        ImGui::BeginChild(("##treeview_" + std::string(label)).c_str(), ImVec2(0, 300), true);
-                                        drawTreeTextInOrder(tab.tree);
+                                        std::vector<nlohmann::json> nodes;
+                                        nodes.reserve(256);
+                                        collectTreeInOrder(tab.tree, nodes);
+
+                                        ImGui::BeginChild(("##treeview_" + std::string(label)).c_str(), ImVec2(0, 260), true);
+
+                                        ImGui::Text("Обход слева направо:");
+                                        if (nodes.empty()) {
+                                            ImGui::TextDisabled("Дерево пусто.");
+                                        } else {
+                                            int idx = 1;
+                                            for (const auto& n : nodes) {
+                                                const std::string display = n.value("display_value", "");
+                                                const int sid = n.value("sport_id", 0);
+                                                const int w = n.value("weight", 0);
+                                                ImGui::Text("%d) %s  [id=%d, w=%d]", idx++, display.c_str(), sid, w);
+                                            }
+                                        }
+
+                                        ImGui::Separator();
+                                        ImGui::Text("Обход справа налево:");
+                                        if (nodes.empty()) {
+                                            ImGui::TextDisabled("Дерево пусто.");
+                                        } else {
+                                            int idx = 1;
+                                            for (auto it = nodes.rbegin(); it != nodes.rend(); ++it, ++idx) {
+                                                const auto& n = *it;
+                                                const std::string display = n.value("display_value", "");
+                                                const int sid = n.value("sport_id", 0);
+                                                const int w = n.value("weight", 0);
+                                                ImGui::Text("%d) %s  [id=%d, w=%d]", idx, display.c_str(), sid, w);
+                                            }
+                                        }
+
                                         ImGui::EndChild();
                                     } else if (tab.isBuilding) {
                                         ImGui::Text("Построение дерева...");
@@ -1228,6 +1406,69 @@ int main() {
             }
 
             ImGui::PopStyleColor(3);
+            ImGui::EndPopup();
+        }
+
+        // ========== ВСТРОЕННЫЙ ВЫБОР ФАЙЛА ==========
+        if (ui.imagePickerOpen) {
+            ImGui::OpenPopup("ImagePickerModal");
+        }
+        if (ImGui::BeginPopupModal("ImagePickerModal", nullptr, ImGuiWindowFlags_AlwaysAutoResize)) {
+            ImGui::Text("Выбор изображения для новой записи");
+            ImGui::Separator();
+            ImGui::InputText("Папка", ui.imagePickerDir, sizeof(ui.imagePickerDir));
+            ImGui::TextDisabled("Допустимые форматы: .png .jpg .jpeg .bmp .tga");
+            ImGui::Separator();
+
+            auto isAllowedImage = [](const std::filesystem::path& p) {
+                std::string ext = p.extension().string();
+                std::transform(ext.begin(), ext.end(), ext.begin(),
+                               [](unsigned char ch) { return static_cast<char>(std::tolower(ch)); });
+                return ext == ".png" || ext == ".jpg" || ext == ".jpeg" || ext == ".bmp" || ext == ".tga";
+            };
+
+            std::vector<std::filesystem::path> files;
+            std::string pickerError;
+            try {
+                const std::filesystem::path dir(ui.imagePickerDir);
+                if (std::filesystem::exists(dir) && std::filesystem::is_directory(dir)) {
+                    for (const auto& entry : std::filesystem::directory_iterator(dir)) {
+                        if (!entry.is_regular_file()) continue;
+                        if (isAllowedImage(entry.path())) files.push_back(entry.path());
+                    }
+                    std::sort(files.begin(), files.end());
+                } else {
+                    pickerError = "Папка не существует";
+                }
+            } catch (...) {
+                pickerError = "Не удалось прочитать папку";
+            }
+
+            ImGui::BeginChild("##image_picker_list", ImVec2(560, 260), true);
+            if (!pickerError.empty()) {
+                ImGui::TextColored(g_errorColor, "%s", pickerError.c_str());
+            } else if (files.empty()) {
+                ImGui::TextDisabled("В этой папке нет подходящих изображений.");
+            } else {
+                for (const auto& p : files) {
+                    const std::string label = p.filename().string();
+                    if (ImGui::Selectable(label.c_str())) {
+                        ui.selectedImageSourcePath = p.string();
+                        std::strncpy(ui.imagePath, ui.selectedImageSourcePath.c_str(), sizeof(ui.imagePath));
+                        ui.imagePath[sizeof(ui.imagePath) - 1] = '\0';
+                        ui.imagePickMessage = "Файл выбран";
+                        g_lastImageDirectory = p.parent_path();
+                        ui.imagePickerOpen = false;
+                        ImGui::CloseCurrentPopup();
+                    }
+                }
+            }
+            ImGui::EndChild();
+
+            if (ImGui::Button("Отмена", ImVec2(120, 0))) {
+                ui.imagePickerOpen = false;
+                ImGui::CloseCurrentPopup();
+            }
             ImGui::EndPopup();
         }
         

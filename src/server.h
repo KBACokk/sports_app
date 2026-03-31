@@ -242,6 +242,8 @@ private:
 
             std::string fieldStr = "name";
             if (req.has_param("field")) fieldStr = req.get_param_value("field");
+            std::string orderStr = "asc";
+            if (req.has_param("order")) orderStr = req.get_param_value("order");
 
             SortField field = sortFieldFromString(fieldStr);
             if (field == SortField::None) {
@@ -255,18 +257,23 @@ private:
 
             if (!data_.empty()) {
                 quickSort(data_, 0, static_cast<int>(data_.size()) - 1, field);
+                const bool descending = (orderStr == "desc" || orderStr == "DESC");
+                if (descending) {
+                    std::reverse(data_.begin(), data_.end());
+                }
             }
 
             currentSortField_ = field;
             isSorted_ = true;
             storage_.saveAll(data_);
 
-            logger_.info("Sorted by field: " + fieldStr);
+            logger_.info("Sorted by field: " + fieldStr + ", order=" + orderStr);
 
             json response = {
                 {"status", "success"},
                 {"message", "Sorted"},
-                {"field", fieldStr}
+                {"field", fieldStr},
+                {"order", orderStr}
             };
 
             res.set_content(response.dump(2), "application/json");

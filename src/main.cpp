@@ -9,8 +9,6 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
 
-#include "portable-file-dialogs.h"
-
 #include "imgui.h"
 #include "implot.h"
 #include "backends/imgui_impl_glfw.h"
@@ -24,22 +22,17 @@
 #include <string>
 #include <array>
 #include <unordered_map>
-#include <unordered_set>
 #include <sstream>
 #include <iomanip>
 #include <cstring>
 #include <cstdlib>
 #include <algorithm>
-#include <chrono>
-#include <thread>
-#include <optional>
 
 #if defined(_WIN32)
 #  ifndef NOMINMAX
 #    define NOMINMAX
 #  endif
 #  include <windows.h>
-#  include <commdlg.h>
 #elif defined(__linux__)
 #  include <unistd.h>
 #endif
@@ -48,11 +41,9 @@
 // Forward declaration to allow function prototypes to use UiState before its definition.
 struct UiState;
 static void deleteRecord(UiState& ui, int id);
-static void drawTreeTextInOrder(const nlohmann::json& node, int depth = 0);
 static std::string sortFieldToBackendString(SortField field);
 static bool fetchCategories(UiState& ui);
 static void collectTreeInOrder(const nlohmann::json& node, std::vector<nlohmann::json>& out);
-static std::optional<std::string> pickImageFile(std::string& statusMessage);
 
 // ========== ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ==========
 
@@ -166,7 +157,6 @@ struct TreeTabState {
     std::string status;
     nlohmann::json foundRecord;
     bool hasFoundRecord = false;
-    bool isBuilding = false;
 };
 
 struct UiState {
@@ -223,10 +213,6 @@ struct UiState {
     bool filterNonOlympic = false;
     std::vector<std::string> knownCategories;
     
-    // Статистика
-    int totalOlympic = 0;
-    int totalCategories = 0;
-    std::unordered_map<std::string, int> categoryStats;
 };
 
 // ========== ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ ==========
@@ -428,56 +414,6 @@ static std::string normalizeUserPath(std::string raw) {
     return raw;
 }
 
-static std::optional<std::string> pickImageFile(std::string& statusMessage) {
-    statusMessage.clear();
-
-    // Try portable-file-dialogs first.
-    if (pfd::settings::available()) {
-        const std::string startDir = std::filesystem::current_path().string();
-        auto selection = pfd::open_file(
-            "Выбор изображения",
-            startDir,
-            {"Image Files", "*.png *.jpg *.jpeg *.bmp *.tga"}
-        ).result();
-        if (!selection.empty()) {
-            std::filesystem::path p(selection[0]);
-            if (p.has_parent_path()) g_lastImageDirectory = p.parent_path();
-            return selection[0];
-        }
-    }
-
-#if defined(_WIN32)
-    // Fallback to native WinAPI file picker.
-    wchar_t fileBuffer[MAX_PATH] = {0};
-    OPENFILENAMEW ofn;
-    ZeroMemory(&ofn, sizeof(ofn));
-    ofn.lStructSize = sizeof(ofn);
-    ofn.hwndOwner = nullptr;
-    ofn.lpstrFile = fileBuffer;
-    ofn.nMaxFile = MAX_PATH;
-    ofn.lpstrFilter = L"Image Files\0*.png;*.jpg;*.jpeg;*.bmp;*.tga\0All Files\0*.*\0";
-    ofn.nFilterIndex = 1;
-    ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_HIDEREADONLY;
-
-    if (GetOpenFileNameW(&ofn)) {
-        const std::filesystem::path p(fileBuffer);
-        if (p.has_parent_path()) g_lastImageDirectory = p.parent_path();
-        return p.string();
-    }
-
-    const DWORD err = CommDlgExtendedError();
-    if (err != 0) {
-        statusMessage = "Системный диалог выбора файла завершился с ошибкой";
-    } else {
-        statusMessage = "Файл не выбран";
-    }
-    return std::nullopt;
-#else
-    statusMessage = "Диалог выбора файла недоступен в текущем окружении";
-    return std::nullopt;
-#endif
-}
-
 static void drawStatusBar(const std::string& status, const std::string& error = "") {
     ImDrawList* drawList = ImGui::GetWindowDrawList();
     const ImVec2 pos = ImGui::GetWindowPos();
@@ -496,35 +432,6 @@ static void drawStatusBar(const std::string& status, const std::string& error = 
     } else if (!status.empty()) {
         ImGui::TextColored(g_successColor, "✓ %s", status.c_str());
     }
-}
-
-static void drawTreeTextInOrder(const nlohmann::json& node, int depth) {
-    if (node.is_null()) return;
-
-    drawTreeTextInOrder(node["left"], depth + 1);
-
-    std::string prefix;
-    prefix.reserve(static_cast<size_t>(depth) * 3 + 2);
-    for (int i = 0; i < depth; ++i) {
-        prefix += "│  ";
-    }
-    if (depth > 0) {
-        prefix += "└─";
-    }
-
-    const std::string displayValue = node.value("display_value", "");
-    const int sportId = node.value("sport_id", 0);
-    const int weight = node.value("weight", 0);
-
-    std::string line = prefix + displayValue +
-        "  [id=" + std::to_string(sportId) + "]" +
-        "  (w:" + std::to_string(weight) + ")";
-
-    const float depthTint = std::min(0.55f, 0.08f * static_cast<float>(depth));
-    const ImVec4 treeColor = ImVec4(0.78f - depthTint, 0.86f - depthTint * 0.4f, 1.0f - depthTint, 1.0f);
-    ImGui::TextColored(treeColor, "%s", line.c_str());
-
-    drawTreeTextInOrder(node["right"], depth + 1);
 }
 
 static void collectTreeInOrder(const nlohmann::json& node, std::vector<nlohmann::json>& out) {
@@ -1183,7 +1090,7 @@ int main() {
                             ui.imagePath,
                             sizeof(ui.imagePath)
                         );
-                        ImGui::TextDisabled("Можно просто: football.png (поиск в C:/Users/Egor/Desktop/images).");
+                        ImGui::TextDisabled("");
                         if (ImGui::Button("Выбрать файл")) {
                             ui.imagePickerOpen = true;
                         }
@@ -1226,7 +1133,6 @@ int main() {
 
                                 if (ImGui::BeginTabItem(label)) {
                                     if (ImGui::Button("Построить дерево")) {
-                                        tab.isBuilding = true;
                                         httplib::Client cli("127.0.0.1", 8080);
                                         std::string fieldStr = sortFieldToBackendString(field);
                                         auto res = cli.Get(("/api/sports/tree?field=" + fieldStr).c_str());
@@ -1238,7 +1144,6 @@ int main() {
                                         } else {
                                             tab.status = "Ошибка построения дерева";
                                         }
-                                        tab.isBuilding = false;
                                     }
 
                                     ImGui::SameLine();
@@ -1268,7 +1173,7 @@ int main() {
                                     ImGui::Text("Статус: %s", tab.status.c_str());
                                     ImGui::Separator();
 
-                                    if (!tab.tree.is_null() && !tab.isBuilding) {
+                                    if (!tab.tree.is_null()) {
                                         std::vector<nlohmann::json> nodes;
                                         nodes.reserve(256);
                                         collectTreeInOrder(tab.tree, nodes);
@@ -1304,8 +1209,6 @@ int main() {
                                         }
 
                                         ImGui::EndChild();
-                                    } else if (tab.isBuilding) {
-                                        ImGui::Text("Построение дерева...");
                                     } else {
                                         ImGui::Text("Нажмите 'Построить дерево'");
                                     }
@@ -1362,7 +1265,7 @@ int main() {
                         if (ui.hasBinarySearchRecord) {
                             drawRecordCard(ui.binarySearchRecord, false);
                         } else {
-                            ImGui::TextDisabled("Сначала выполните бинарный поиск.");
+                            ImGui::TextDisabled("");
                         }
                         ImGui::EndTabItem();
                     }

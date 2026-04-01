@@ -414,6 +414,85 @@ static std::string normalizeUserPath(std::string raw) {
     return raw;
 }
 
+static bool isAllowedImageFile(const std::filesystem::path& p) {
+    std::string ext = p.extension().string();
+    std::transform(ext.begin(), ext.end(), ext.begin(),
+                   [](unsigned char ch) { return static_cast<char>(std::tolower(ch)); });
+    return ext == ".png" || ext == ".jpg" || ext == ".jpeg" || ext == ".bmp" || ext == ".tga";
+}
+
+static bool copyImageToAssets(const std::filesystem::path& source, std::string& storedPath, std::string& error) {
+    storedPath.clear();
+    error.clear();
+    try {
+        if (!std::filesystem::exists(source) || !std::filesystem::is_regular_file(source)) {
+            error = "Файл изображения не найден";
+            return false;
+        }
+        if (!isAllowedImageFile(source)) {
+            error = "Неподдерживаемый формат изображения";
+            return false;
+        }
+
+        const std::filesystem::path assetsDir = std::filesystem::path("assets") / "images";
+        std::filesystem::create_directories(assetsDir);
+
+        const std::string stem = source.stem().string();
+        const std::string ext = source.extension().string();
+        std::filesystem::path target = assetsDir / (stem + ext);
+        int suffix = 1;
+        while (std::filesystem::exists(target)) {
+            bool sameFile = false;
+            try {
+                sameFile = std::filesystem::equivalent(source, target);
+            } catch (...) {
+                sameFile = false;
+            }
+            if (sameFile) break;
+            target = assetsDir / (stem + "_" + std::to_string(suffix++) + ext);
+        }
+
+        if (!std::filesystem::exists(target)) {
+            std::filesystem::copy_file(source, target, std::filesystem::copy_options::overwrite_existing);
+        }
+
+        if (source.has_parent_path()) g_lastImageDirectory = source.parent_path();
+        storedPath = target.generic_string();
+        return true;
+    } catch (const std::filesystem::filesystem_error&) {
+        error = "Ошибка копирования изображения в assets/images";
+        return false;
+    }
+}
+
+static std::filesystem::path resolvePickerDirectory(const std::string& rawInput) {
+    const std::string normalized = normalizeUserPath(rawInput);
+    if (normalized.empty()) return {};
+
+    std::filesystem::path p(normalized);
+    try {
+        if (std::filesystem::exists(p)) {
+            if (std::filesystem::is_directory(p)) return p;
+            if (std::filesystem::is_regular_file(p)) return p.parent_path();
+        }
+    } catch (...) {
+    }
+
+    const std::string resolved = resolveImagePath(normalized);
+    if (!resolved.empty()) {
+        std::filesystem::path rp(resolved);
+        try {
+            if (std::filesystem::exists(rp)) {
+                if (std::filesystem::is_directory(rp)) return rp;
+                if (std::filesystem::is_regular_file(rp)) return rp.parent_path();
+            }
+        } catch (...) {
+        }
+    }
+
+    return p.parent_path();
+}
+
 static void drawStatusBar(const std::string& status, const std::string& error = "") {
     ImDrawList* drawList = ImGui::GetWindowDrawList();
     const ImVec2 pos = ImGui::GetWindowPos();
@@ -710,26 +789,28 @@ static void addRecord(UiState& ui) {
         return;
     }
 
-    // Такой же принцип, как у предзаполненных записей:
-    // сохраняем корректный image_path (предпочтительно имя файла), а отображение
-    // выполняется через resolveImagePath с поиском в стандартных директориях.
     std::string finalImagePath;
     const std::string typedPath = normalizeUserPath(std::string(ui.imagePath));
     const std::filesystem::path selectedPath(ui.selectedImageSourcePath);
+    std::filesystem::path sourceImagePath;
 
     if (!ui.selectedImageSourcePath.empty() && std::filesystem::exists(selectedPath)) {
-        finalImagePath = selectedPath.filename().string(); // как у стартовых записей (например football.png)
-        if (selectedPath.has_parent_path()) g_lastImageDirectory = selectedPath.parent_path();
+        sourceImagePath = selectedPath;
     } else if (!typedPath.empty()) {
         const std::string resolvedTyped = resolveImagePath(typedPath);
         if (!resolvedTyped.empty() && std::filesystem::exists(std::filesystem::path(resolvedTyped))) {
-            finalImagePath = std::filesystem::path(resolvedTyped).filename().string();
-            const std::filesystem::path resolvedPath(resolvedTyped);
-            if (resolvedPath.has_parent_path()) g_lastImageDirectory = resolvedPath.parent_path();
+            sourceImagePath = std::filesystem::path(resolvedTyped);
         } else {
-            // Если ввели только имя файла, сохраняем как есть — resolveImagePath попробует
-            // найти файл при показе (в т.ч. C:/Users/Egor/Desktop/images).
-            finalImagePath = typedPath;
+            ui.errorMessage = "Файл изображения не найден: " + typedPath;
+            return;
+        }
+    }
+
+    if (!sourceImagePath.empty()) {
+        std::string copyError;
+        if (!copyImageToAssets(sourceImagePath, finalImagePath, copyError)) {
+            ui.errorMessage = copyError;
+            return;
         }
     }
     
@@ -747,7 +828,7 @@ static void addRecord(UiState& ui) {
     auto res = cli.Post("/api/sports", body.dump(), "application/json");
     
     if (res && res->status == 200) {
-        ui.status = "Запись добавлена";
+        ui.status = finalImagePath.empty() ? "Запись добавлена" : "Запись добавлена, изображение сохранено";
         ui.errorMessage.clear();
         fetchPage(ui);
         fetchCategories(ui);
@@ -1090,8 +1171,23 @@ int main() {
                             ui.imagePath,
                             sizeof(ui.imagePath)
                         );
-                        ImGui::TextDisabled("");
+                        ImGui::TextDisabled("Можно указать абсолютный или относительный путь к изображению.");
                         if (ImGui::Button("Выбрать файл")) {
+                            std::filesystem::path startDir;
+                            if (!ui.selectedImageSourcePath.empty()) {
+                                startDir = resolvePickerDirectory(ui.selectedImageSourcePath);
+                            }
+                            if (startDir.empty()) {
+                                startDir = resolvePickerDirectory(std::string(ui.imagePath));
+                            }
+                            if (startDir.empty() && !g_lastImageDirectory.empty()) {
+                                startDir = g_lastImageDirectory;
+                            }
+                            if (!startDir.empty()) {
+                                const std::string start = startDir.generic_string();
+                                std::strncpy(ui.imagePickerDir, start.c_str(), sizeof(ui.imagePickerDir));
+                                ui.imagePickerDir[sizeof(ui.imagePickerDir) - 1] = '\0';
+                            }
                             ui.imagePickerOpen = true;
                         }
                         ImGui::SameLine();
@@ -1112,6 +1208,23 @@ int main() {
                             }
                             ImGui::Text("Предпросмотр:");
                             drawImagePreview(resolveImagePath(ui.selectedImageSourcePath), 170.0f, 120.0f);
+                        }
+
+                        const std::string typedImagePath = normalizeUserPath(std::string(ui.imagePath));
+                        if (!typedImagePath.empty()) {
+                            const std::string resolvedTypedPath = resolveImagePath(typedImagePath);
+                            const bool typedOk = !resolvedTypedPath.empty() &&
+                                std::filesystem::exists(std::filesystem::path(resolvedTypedPath));
+                            ImGui::TextColored(
+                                typedOk ? g_successColor : g_warningColor,
+                                "%s: %s",
+                                typedOk ? "Путь найден" : "Путь не найден",
+                                typedImagePath.c_str()
+                            );
+                            if (typedOk) {
+                                ImGui::Text("Предпросмотр по пути:");
+                                drawImagePreview(resolvedTypedPath, 170.0f, 120.0f);
+                            }
                         }
 
                         ImGui::Separator();
@@ -1323,25 +1436,21 @@ int main() {
             ImGui::TextDisabled("Допустимые форматы: .png .jpg .jpeg .bmp .tga");
             ImGui::Separator();
 
-            auto isAllowedImage = [](const std::filesystem::path& p) {
-                std::string ext = p.extension().string();
-                std::transform(ext.begin(), ext.end(), ext.begin(),
-                               [](unsigned char ch) { return static_cast<char>(std::tolower(ch)); });
-                return ext == ".png" || ext == ".jpg" || ext == ".jpeg" || ext == ".bmp" || ext == ".tga";
-            };
-
             std::vector<std::filesystem::path> files;
             std::string pickerError;
             try {
-                const std::filesystem::path dir(ui.imagePickerDir);
-                if (std::filesystem::exists(dir) && std::filesystem::is_directory(dir)) {
+                const std::filesystem::path dir = resolvePickerDirectory(std::string(ui.imagePickerDir));
+                if (!dir.empty() && std::filesystem::exists(dir) && std::filesystem::is_directory(dir)) {
+                    const std::string normalizedDir = dir.generic_string();
+                    std::strncpy(ui.imagePickerDir, normalizedDir.c_str(), sizeof(ui.imagePickerDir));
+                    ui.imagePickerDir[sizeof(ui.imagePickerDir) - 1] = '\0';
                     for (const auto& entry : std::filesystem::directory_iterator(dir)) {
                         if (!entry.is_regular_file()) continue;
-                        if (isAllowedImage(entry.path())) files.push_back(entry.path());
+                        if (isAllowedImageFile(entry.path())) files.push_back(entry.path());
                     }
                     std::sort(files.begin(), files.end());
                 } else {
-                    pickerError = "Папка не существует";
+                    pickerError = "Папка не найдена (можно вставить путь к файлу, откроется его папка)";
                 }
             } catch (...) {
                 pickerError = "Не удалось прочитать папку";

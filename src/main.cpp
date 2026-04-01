@@ -80,8 +80,8 @@ static std::filesystem::path getExecutablePath() {
 
 // Настройка рабочей директории
 struct ResolvedPaths {
-    std::filesystem::path appRoot;   // where assets/ live; set as CWD
-    std::filesystem::path dataRoot;  // where data/ live; storage uses absolute paths
+    std::filesystem::path appRoot; 
+    std::filesystem::path dataRoot; 
 };
 
 static ResolvedPaths setupWorkingDirectory() {
@@ -111,9 +111,7 @@ static ResolvedPaths setupWorkingDirectory() {
     auto findDataRootUpwards = [&](std::filesystem::path start) -> std::filesystem::path {
         std::filesystem::path cur = start;
         for (int i = 0; i < 8; ++i) {
-            // Prefer "this folder has data/"
             if (looksLikeDataRoot(cur)) return cur;
-            // Also check common nested app dir
             if (looksLikeDataRoot(cur / "sports_app")) return cur / "sports_app";
             if (!cur.has_parent_path()) break;
             const auto parent = cur.parent_path();
@@ -127,7 +125,6 @@ static ResolvedPaths setupWorkingDirectory() {
     out.appRoot = findAppRootUpwards(exeDir);
     if (out.appRoot.empty()) out.appRoot = findAppRootUpwards(std::filesystem::current_path());
 
-    // Data root can be different from app root (e.g., user keeps shared data/ at repo root).
     out.dataRoot = findDataRootUpwards(exeDir);
     if (out.dataRoot.empty()) out.dataRoot = findDataRootUpwards(std::filesystem::current_path());
     if (out.dataRoot.empty()) out.dataRoot = out.appRoot;
@@ -1197,6 +1194,40 @@ int main() {
                             ui.imagePickMessage.clear();
                         }
 
+                        const std::string typedImagePath = normalizeUserPath(std::string(ui.imagePath));
+
+                        std::string resolvedSelected;
+                        if (!ui.selectedImageSourcePath.empty()) {
+                            resolvedSelected = resolveImagePath(ui.selectedImageSourcePath);
+                        }
+                        std::string resolvedTyped;
+                        if (!typedImagePath.empty()) {
+                            resolvedTyped = resolveImagePath(typedImagePath);
+                        }
+
+                        const bool selOk = !resolvedSelected.empty() &&
+                            std::filesystem::exists(std::filesystem::path(resolvedSelected));
+                        const bool typOk = !resolvedTyped.empty() &&
+                            std::filesystem::exists(std::filesystem::path(resolvedTyped));
+
+                        bool sameResolved = false;
+                        if (selOk && typOk) {
+                            try {
+                                sameResolved = std::filesystem::equivalent(
+                                    std::filesystem::path(resolvedSelected),
+                                    std::filesystem::path(resolvedTyped));
+                            } catch (...) {
+                                sameResolved = (resolvedSelected == resolvedTyped);
+                            }
+                        }
+
+                        std::string previewPath;
+                        if (selOk) {
+                            previewPath = resolvedSelected;
+                        } else if (typOk) {
+                            previewPath = resolvedTyped;
+                        }
+
                         if (!ui.selectedImageSourcePath.empty()) {
                             const bool okFile = std::filesystem::exists(std::filesystem::path(ui.selectedImageSourcePath));
                             ImGui::TextColored(okFile ? g_successColor : g_warningColor,
@@ -1206,25 +1237,20 @@ int main() {
                             if (!ui.imagePickMessage.empty()) {
                                 ImGui::TextDisabled("%s", ui.imagePickMessage.c_str());
                             }
-                            ImGui::Text("Предпросмотр:");
-                            drawImagePreview(resolveImagePath(ui.selectedImageSourcePath), 170.0f, 120.0f);
                         }
 
-                        const std::string typedImagePath = normalizeUserPath(std::string(ui.imagePath));
-                        if (!typedImagePath.empty()) {
-                            const std::string resolvedTypedPath = resolveImagePath(typedImagePath);
-                            const bool typedOk = !resolvedTypedPath.empty() &&
-                                std::filesystem::exists(std::filesystem::path(resolvedTypedPath));
+                        if (!typedImagePath.empty() && !sameResolved) {
                             ImGui::TextColored(
-                                typedOk ? g_successColor : g_warningColor,
+                                typOk ? g_successColor : g_warningColor,
                                 "%s: %s",
-                                typedOk ? "Путь найден" : "Путь не найден",
+                                typOk ? "Путь найден" : "Путь не найден",
                                 typedImagePath.c_str()
                             );
-                            if (typedOk) {
-                                ImGui::Text("Предпросмотр по пути:");
-                                drawImagePreview(resolvedTypedPath, 170.0f, 120.0f);
-                            }
+                        }
+
+                        if (!previewPath.empty()) {
+                            ImGui::Text("Предпросмотр:");
+                            drawImagePreview(previewPath, 170.0f, 120.0f);
                         }
 
                         ImGui::Separator();
